@@ -1,0 +1,54 @@
+<html>
+
+<head>
+	<title>registration form</title>
+</head>
+
+<h2 ALIGN="CENTER">Registration form</h2>
+
+<form action="{{ url_for('info') }}" method="POST">
+	<table border="0" align="center">
+		<tbody>
+
+			<tr>
+				<td><label for="id">Id: </label></td>
+				<td><input id="id" maxlength="50" name="id" type="text" /></td>
+			</tr>
+
+			<tr>
+				<td><label for="name">Name: </label></td>
+				<td><input id="name" maxlength="50" name="name" type="text" /></td>
+			</tr>
+
+
+			<tr>
+				<td><label for="activity_name">activity_name: </label></td>
+				<td><input id="activity_name" maxlength="50" name="activity_name" type="text" /></td>
+			</tr>
+
+			<!-- <tr>
+				<td><label for="filename">filename:</label></td>
+				<td><input id="filename" maxlength="50" name="filename" type="text" /></td>
+			</tr> -->
+
+
+			<tr>
+				<td align="right"><input name="Submit" type="Submit" value="Submit" /></td>
+			</tr>
+
+		</tbody>
+	</table>
+</form>
+<h3 style="font-family:courier;">Instructions:</h3>
+<ol style="font-family:courier;">
+	<li>1 - Savdhan</li>
+	<li>2 - Vishram</li>
+	<li>3 -Baye salute</li>
+	<li>4 - Daine Salute</li>
+	<li>5 -front salute</li>
+	<li>6 - Khade_Khade_Daine_Mud</li>
+	<li>7 - Khade_Khade_Baye_Mud</li>
+	<li>8 - Khade_Khade_Peeche_Mud</li>
+</ol>
+
+</html>
