@@ -43,23 +43,29 @@ except OSError as error:
 # instatiate flask app
 app = Flask(__name__, template_folder='./templates')
 
-
-camera = cv2.VideoCapture(0)
-camera.set(cv2.CAP_PROP_FRAME_WIDTH, 1100)
-camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 1100)
-
+#Initialise the camera variable to None
+# global camera 
 # camera = None
-# here the system default of camera might be used so the calculated window size will be for saved video
-# we can always decide the video size to be shown in the frontend
-frame_width = int(camera.get(3))
-frame_height = int(camera.get(4))
-util.window_size = (frame_width, frame_height)
+# camera = cv2.VideoCapture(0)
+
+# camera.set(cv2.CAP_PROP_FRAME_WIDTH, 1100)
+# camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 1100)
+
+# # we can always decide the video size to be shown in the frontend
+# frame_width = int(camera.get(3))
+# frame_height = int(camera.get(4))
+# util.window_size = (frame_width, frame_height)
+
+# camera.release()
+#we will turn the camera again when 
+#Another approach for this is to set a window size to constant value
+
 # util.window_size = (800, 600)
 
-iwriter = cv2.VideoWriter(f'Performance Videos/ProcessedVideo_{today}.mp4', cv2.VideoWriter_fourcc(
-    *'MP4V'), 10, (frame_width, frame_height))  # writes for default starting 5 sec
-swriter = cv2.VideoWriter(f'Performance Videos/ProcessedVideo_salute_{today}.mp4', cv2.VideoWriter_fourcc(
-    *'MP4V'), 10, (frame_width, frame_height))  # writer for when correct salute is detected
+# iwriter = cv2.VideoWriter(f'Performance Videos/ProcessedVideo_{today}.mp4', cv2.VideoWriter_fourcc(
+#     *'MP4V'), 10, (frame_width, frame_height))  # writes for default starting 5 sec
+# swriter = cv2.VideoWriter(f'Performance Videos/ProcessedVideo_salute_{today}.mp4', cv2.VideoWriter_fourcc(
+#     *'MP4V'), 10, (frame_width, frame_height))  # writer for when correct salute is detected
 
 # TODO: start variable needs to be defined as global to be used in the function
 # TODO: writers need to be global, started and stopped in between as execution proceeds
@@ -79,11 +85,22 @@ def gen_frames_pose(a=1):  # generate frame by frame from camera
     chk = False
     last_flag = False
     start_angle = 0
+
+    camera = cv2.VideoCapture(0)
+
+    camera.set(cv2.CAP_PROP_FRAME_WIDTH, 1100)
+    camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 1100)
+
+    # we can always decide the video size to be shown in the frontend
+    frame_width = int(camera.get(3))
+    frame_height = int(camera.get(4))
+    util.window_size = (frame_width, frame_height)
+
     global iwriter, swriter
-    # iwriter = cv2.VideoWriter(f'Performance Videos/ProcessedVideo_{today}.mp4', cv2.VideoWriter_fourcc(
-    #     *'MP4V'), 10, (frame_width, frame_height))  # writes for default starting 5 sec
-    # swriter = cv2.VideoWriter(f'Performance Videos/ProcessedVideo_salute_{today}.mp4', cv2.VideoWriter_fourcc(
-    #     *'MP4V'), 10, (frame_width, frame_height))  # writer for when correct salute is detected
+    iwriter = cv2.VideoWriter(f'Performance Videos/ProcessedVideo_{today}.mp4', cv2.VideoWriter_fourcc(
+        *'MP4V'), 10, (frame_width, frame_height))  # writes for default starting 5 sec
+    swriter = cv2.VideoWriter(f'Performance Videos/ProcessedVideo_salute_{today}.mp4', cv2.VideoWriter_fourcc(
+        *'MP4V'), 10, (frame_width, frame_height))  # writer for when correct salute is detected
 
     while True:
         ok, frame = camera.read()
@@ -185,6 +202,8 @@ def index():
 
 @ app.route('/index', methods=['POST'])
 def info():
+    # global camera
+    # camera = cv2.VideoCapture(0)
     global i, n, activity, activity_name
     i = request.form.get("id", False)
     n = request.form.get("name", False)
@@ -203,10 +222,10 @@ def thankyou():
     global correct
     try:
         if correct == 1:
-            os.remove(f'Performance Videos/ProcessedVideo_{today}.mp4')
+            os.remove(f'{os.getcwd()}/Performance Videos/ProcessedVideo_{today}.mp4')
             filename = f'ProcessedVideo_salute_{today}.mp4'
         elif correct == 0:
-            os.remove(f'Performance Videos/ProcessedVideo_salute_{today}.mp4')
+            os.remove(f'{os.getcwd()}/Performance Videos/ProcessedVideo_salute_{today}.mp4')
             filename = f'ProcessedVideo_{today}.mp4'
     except:
         print('Videos not found')
@@ -218,7 +237,7 @@ def thankyou():
     conn = sqlite3.connect('test.db')
     print("Opened database successfully")
     query = 'INSERT INTO test  VALUES (?, ?, ?, ?,?)'
-    fname = f'{os.getcwd()}\Performance Videos\ProcessedVideo_{today}'
+    fname = f'{os.getcwd()}\Performance Videos\{filename}'
     print(f"{i}, {n}, {activity},{activity_check_flag},{fname}")
     # C:\Users\Lenovo\Desktop\WORK\DIAT Repo\Send\Performance Videos\ProcessedVideo_2022_12_20-10_22_09_46
     # C:\Users\Lenovo\Desktop\WORK\DIAT Repo\Send\Performance Videos\ProcessedVideo_2022_12_20-10_22_26_56
