@@ -10,9 +10,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "request-promise": "*",
-    "electron": "*",
+    "electron": "^22.0.2",
+    "electron-packager": "^17.1.1",
     "request": "*",
-    "electron-packager": "^17.1.1"
+    "request-promise": "*"
   }
 }

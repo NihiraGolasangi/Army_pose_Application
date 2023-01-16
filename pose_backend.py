@@ -29,7 +29,7 @@ except OSError as error:
 
 
 # instatiate flask app
-app = Flask(__name__, template_folder='./templates1')
+app = Flask(__name__, template_folder='./templates')
 
 
 camera = cv2.VideoCapture(0)
