@@ -3,22 +3,8 @@
 		<div class="row">
 			<div class="col-lg-8  offset-lg-2">
 
-				<h2 class="title" style="color:rgb(88, 88, 189)">Please Perform the _ activity</h2>
-				<form method="post" action="{{ url_for('tasks') }}">
-					<!-- <input type="submit" value="Stop/Start" name="stop" /> -->
-					<!-- <input type="submit" value="Capture" name="click" /> -->
-					<!-- <input type="submit" value="Grey" name="grey" /> -->
-					<!-- <input type="submit" value="Negative" name="neg" /> -->
-					<!-- <input type="submit" value="Face Only" name="face" /> -->
-					<!-- <input type="submit" value="Start/Stop Recording" name="rec" /> -->
-					<!-- <label for="exercise">Exercise:</label>
-		
-			<select name="exercise" id="exercise">
-				<option value="1">Savdhan</option>
-				<option value="2">Vishram</option>
-			</select> -->
-
-				</form>
+				<h2 class="title" style="color:rgb(88, 88, 189)">Please Perform the {{ activity }} activity, {{ name }}</h2>
+				
 				<img src="{{ url_for('video_feed') }}" >
 
 				<form method="get" action="{{ url_for('thankyou') }}">
@@ -44,14 +30,14 @@
 
 <!-- ********************STYLE******************** -->
 <style>
-	*{
+	/* *{
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins',sans-serif;
-}
+} */
         body{
-            height: 100vh;
+            /* height: 100vh; */
             display: flex;
             justify-content: center;
             align-items: center;

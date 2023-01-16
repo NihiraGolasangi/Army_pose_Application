@@ -19,6 +19,18 @@ today = datetime.datetime.now().strftime("%Y_%m_%d-%I_%H_%M_%S")
 activity_check_flag = False
 
 
+name_dict = {
+    1: "Savdhan",
+    2: "Vishram",
+    3: "Baye Salute",
+    4: "Daine Salute",
+    5: "Front Salute",
+    6: "Khade Khade Daine Mud",
+    7: "Khade Khade Baye Mud",
+    8: "Khade Khade Peeche Mud"
+}
+
+
 try:
     # Check if video directory exists, if not create it.
     dirname = "Performance Videos"
@@ -37,14 +49,17 @@ camera.set(cv2.CAP_PROP_FRAME_WIDTH, 1100)
 camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 1100)
 
 # camera = None
-
+# here the system default of camera might be used so the calculated window size will be for saved video
+# we can always decide the video size to be shown in the frontend
 frame_width = int(camera.get(3))
 frame_height = int(camera.get(4))
 util.window_size = (frame_width, frame_height)
 # util.window_size = (800, 600)
 
-# iwriter = cv2.VideoWriter(f'Performance Videos/ProcessedVideo_{today}.mp4',cv2.VideoWriter_fourcc(*'MP4V'),10, (frame_width, frame_height)) #writes for default starting 5 sec
-# swriter = cv2.VideoWriter(f'Performance Videos/ProcessedVideo_salute_{today}.mp4', cv2.VideoWriter_fourcc(*'MP4V'), 10, (frame_width, frame_height)) #writer for when correct salute is detected
+iwriter = cv2.VideoWriter(f'Performance Videos/ProcessedVideo_{today}.mp4', cv2.VideoWriter_fourcc(
+    *'MP4V'), 10, (frame_width, frame_height))  # writes for default starting 5 sec
+swriter = cv2.VideoWriter(f'Performance Videos/ProcessedVideo_salute_{today}.mp4', cv2.VideoWriter_fourcc(
+    *'MP4V'), 10, (frame_width, frame_height))  # writer for when correct salute is detected
 
 # TODO: start variable needs to be defined as global to be used in the function
 # TODO: writers need to be global, started and stopped in between as execution proceeds
@@ -62,8 +77,9 @@ def gen_frames_pose(a=1):  # generate frame by frame from camera
     mud_array = []
     start = time.time()
     chk = False
+    last_flag = False
     start_angle = 0
-    # global iwriter, swriter
+    global iwriter, swriter
     # iwriter = cv2.VideoWriter(f'Performance Videos/ProcessedVideo_{today}.mp4', cv2.VideoWriter_fourcc(
     #     *'MP4V'), 10, (frame_width, frame_height))  # writes for default starting 5 sec
     # swriter = cv2.VideoWriter(f'Performance Videos/ProcessedVideo_salute_{today}.mp4', cv2.VideoWriter_fourcc(
@@ -135,22 +151,23 @@ def gen_frames_pose(a=1):  # generate frame by frame from camera
                 cv2.putText(frame, "Please ensure full body is visible to the camera",
                             (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
 
-            util.draw_styled_landmarks(frame, results)
+            # commenting out this line as it might cause delay in execution
+            # util.draw_styled_landmarks(frame, results)
 
             # ================================= WRITE VIDEOS ==============================================
 
-            # if end-start <= 20 and not correct:
-            #     iwriter.write(frame)
+            if end-start <= 20 and not correct:
+                iwriter.write(frame)
 
-            # if activity_check_flag and not correct:
-            #     correct = 1
-            #     last_flag = True
-            #     if start_angle == 0:
-            #         start_angle = time()
+            if activity_check_flag and not correct:
+                correct = 1
+                last_flag = True
+                if start_angle == 0:
+                    start_angle = time()
 
-            # if last_flag and start_angle != 0:
-            #     if time() - start_angle <= 20:
-            #         swriter.write(frame)
+            if last_flag and start_angle != 0:
+                if time() - start_angle <= 20:
+                    swriter.write(frame)
 
         try:
             ret, buffer = cv2.imencode('.jpg', frame)
@@ -168,11 +185,12 @@ def index():
 
 @ app.route('/index', methods=['POST'])
 def info():
-    global i, n, activity
+    global i, n, activity, activity_name
     i = request.form.get("id", False)
     n = request.form.get("name", False)
     activity = int(request.form.get("activity_name", False))
-    return render_template('index.html')
+    activity_name = name_dict[activity]
+    return render_template('index.html', name=n, activity=activity_name)
 
 
 @app.route('/video_feed')
@@ -182,6 +200,7 @@ def video_feed():
 
 @app.route('/thankyou')
 def thankyou():
+    global correct
     try:
         if correct == 1:
             os.remove(f'Performance Videos/ProcessedVideo_{today}.mp4')
@@ -193,8 +212,8 @@ def thankyou():
         print('Videos not found')
         pass
 
-    # iwriter.release()
-    # swriter.release()
+    iwriter.release()
+    swriter.release()
 
     conn = sqlite3.connect('test.db')
     print("Opened database successfully")
@@ -210,46 +229,9 @@ def thankyou():
     print("Records created successfully")
     conn.close()
 
-    return render_template("thankyou.html")
+    correct_msg = 'Correctly' if correct == 1 else 'Incorrectly'
 
-
-@app.route('/requests', methods=['POST', 'GET'])
-def tasks():
-    global switch, camera, choice
-    if request.method == 'POST':
-
-        if request.form.get('click') == 'Capture':
-            global capture
-            capture = 1
-
-        elif request.form.get('stop') == 'Stop/Start':
-
-            if (switch == 1):
-                switch = 0
-                camera.release()
-                # cv2.destroyAllWindows()
-
-            else:
-                camera = cv2.VideoCapture(0)
-                switch = 1
-        # elif request.form.get('rec') == 'Start/Stop Recording':
-        #     global rec, out
-        #     rec = not rec
-        #     if (rec):
-        #         now = datetime.datetime.now()
-        #         fourcc = cv2.VideoWriter_fourcc(*'XVID')
-        #         out = cv2.VideoWriter('vid_{}.avi'.format(
-        #             str(now).replace(":", '')), fourcc, 20.0, (640, 480))
-        #         # Start new thread for recording the video
-        #         thread = Thread(target=record, args=[out,])
-        #         thread.start()
-        #     elif (rec == False):
-        #         out.release()
-
-    elif request.method == 'GET':
-        return render_template('index.html')
-    return render_template('index.html')
-
+    return render_template("thankyou.html", name=n, activity=activity_name, correct=correct_msg)
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
