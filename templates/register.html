@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"></html>
+<head>
+    <meta charset="UTF-8">
+	<title>registration form</title>
+</head>
+
+<!-- <h2 ALIGN="CENTER" style="margin-top:150px">Registration form</h2> -->
+<form action="{{ url_for('info') }}" method="POST">	
+    <body >
+        <div class ="container">
+            <div class="title">Registration Form</div>
+            <div class="content">
+                <form action="#">
+                <div class="user-details">
+                    <div class="input-box">
+                        <span class="details"><label for="id"><b>User Id:</b> </label></span>
+                        <!-- <input type="text" placeholder="Enter ID" required> -->
+                        <input id="id" placeholder="Enter ID" required maxlength="50" name="id" type="text" />
+                    </div>
+                    <div class="input-box">
+                        <span class="details"><b>Full Name</b></span>
+                        <!-- <input type="text" placeholder="Enter your name" required> -->
+                        <input id="name" placeholder="Enter Your Name" required maxlength="50" name="name" type="text" />
+                    </div>
+                    <div class="input-box">
+                        <!-- <span class="details">Activity Name</span>
+                        <input type="text" placeholder="Enter your activity" required> -->
+                            <label for="activity_name" span class ="details"><b>Activity Name: </b> </label>
+                                <select name ="activity_name" id="activity_name">
+                                    <option value="1">Savdhan</option>
+                                    <option value="2">Vishram</option>
+                                    <option value="3">Baye Salute</option>
+                                    <option value="4">Daine Salute</option>
+                                    <option value="5">Front Salute</option>
+                                    <option value="6">Khade Khade Daine Mud</option>
+                                    <option value="7">Khade Khade Baye Mud</option>
+                                    <option value="8">Khade Khade Peeche Mud</option>
+                                </select> 
+                        <div class="button">
+                            <input type="submit" value="Register">
+                        </div>
+                    </form>
+                    </div>
+            </div>
+        </div>
+    </body>
+    </html>
+	
+    
+    <!-- ********************STYLE******************** -->
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins',sans-serif;
+        }
+        body{
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            background: linear-gradient(135deg, #71b7e6, #9b59b6);
+        }
+         .container{
+            /* max-width: 700px; */
+            width:100%;
+            background-color: #fff;
+            padding: 25px 30px;
+            border-radius: 5px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+            border: black solid;
+        }
+            .container .title{
+            font-size: 25px;
+            font-weight: 500;
+            /* position: relative; */
+            margin-bottom: 20px;
+            text-align: center;
+            }/*
+        .container .title::before{
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            width: 30px;
+            border-radius: 5px;
+            background: linear-gradient(135deg, #71b7e6, #9b59b6);
+        }*/
+        
+        form .user-details .input-box{
+            margin-bottom: 15px;
+            /* width: calc(100% / 2 - 20px); */
+            }
+        form .input-box span.details{
+            /* display: block; */
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        /* Inside box- text stuff */
+        .user-details .input-box input{
+            height: 45px;
+            width: 100%;
+            outline: none;
+            font-size: 16px;
+            border-radius: 5px;
+            padding-left: 15px;
+            border: 1px solid #ccc;
+            border-bottom-width: 2px;
+            transition: all 0.3s ease;
+        }
+        #activity_name {
+            height: 45px;
+            width: 100%;
+            outline: none;
+            font-size: 16px;
+            border-radius: 5px;
+            padding-left: 15px;
+            border: 1px solid #ccc;
+            border-bottom-width: 2px;
+            transition: all 0.3s ease;
+        } 
+        .button{
+            margin-top: 40px;
+            border: black solid;
+        }
+        form .button input:hover{
+            transform: scale(0.99);
+            background: linear-gradient(-135deg, #71b7e6, #9b59b6);
+        }
+        /* @media(max-width: 584px){
+        .container{
+        max-width: 100%;
+        }   
+        } */
+        </style>
