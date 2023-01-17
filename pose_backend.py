@@ -220,6 +220,7 @@ def video_feed():
 @app.route('/thankyou')
 def thankyou():
     global correct
+    filename=None 
     try:
         if correct == 1:
             os.remove(f'{os.getcwd()}/Performance Videos/ProcessedVideo_{today}.mp4')
@@ -237,7 +238,7 @@ def thankyou():
     conn = sqlite3.connect('test.db')
     print("Opened database successfully")
     query = 'INSERT INTO test  VALUES (?, ?, ?, ?,?)'
-    fname = f'{os.getcwd()}\Performance Videos\{filename}'
+    fname = f'{os.getcwd()}\Performance Videos\{filename}' if filename is not None else "File not found"
     print(f"{i}, {n}, {activity},{activity_check_flag},{fname}")
     # C:\Users\Lenovo\Desktop\WORK\DIAT Repo\Send\Performance Videos\ProcessedVideo_2022_12_20-10_22_09_46
     # C:\Users\Lenovo\Desktop\WORK\DIAT Repo\Send\Performance Videos\ProcessedVideo_2022_12_20-10_22_26_56
