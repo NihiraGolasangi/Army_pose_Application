@@ -1,4 +1,6 @@
 REM start a flask server
+CALL env/Scripts/activate.bat
+REM for the below command to woek you need a python virtual environmen
 set FLASK_APP=pose_backend.py
 set FLASK_ENV=development
 flask run
