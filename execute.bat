@@ -1,10 +1,10 @@
-REM start a flask server
+@REM start a flask server
 CALL env/Scripts/activate.bat
-REM for the below command to woek you need a python virtual environmen
+@REM for the below command to woek you need a python virtual environmen
 set FLASK_APP=pose_backend.py
 set FLASK_ENV=development
 start flask run
-REM the below command will start a flask server on port 5000 on system default browser
+@REM the below command will start a flask server on port 5000 on system default browser
 @REM start http://127.0.0.1:5000/
 
 :loop
@@ -16,5 +16,5 @@ IF %ERRORLEVEL% NEQ 0 (
 ) ELSE (
    echo Server started
 @REM    start chrome http://localhost:8000
-    start http://localhost:5000/
+    start http://127.0.0.1:5000/
 )
