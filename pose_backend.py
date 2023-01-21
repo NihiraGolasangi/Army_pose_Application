@@ -180,10 +180,10 @@ def gen_frames_pose(a=1):  # generate frame by frame from camera
                 correct = 1
                 last_flag = True
                 if start_angle == 0:
-                    start_angle = time()
+                    start_angle = time.time()
 
             if last_flag and start_angle != 0:
-                if time() - start_angle <= 20:
+                if time.time() - start_angle <= 20:
                     swriter.write(frame)
 
         try:

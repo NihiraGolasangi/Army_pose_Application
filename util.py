@@ -630,17 +630,39 @@ def baye_salute(results, frame):
     distance_left = check_direction(left_toe_coordinates, left_heel_coordinates)
     distance_right = check_direction(right_toe_coordinates, right_heel_coordinates)
 
+    #condition for salute
+    left_eyebrow = results.face_landmarks.landmark[359] if results.face_landmarks else None
+    left_hand_middle_finger_tip = results.left_hand_landmarks.landmark[12] if results.left_hand_landmarks else None
+    left_hand_middle_finger_mid = results.left_hand_landmarks.landmark[11] if results.left_hand_landmarks else None
+
+    print('_'*45)
+    if left_eyebrow is None:
+        print(f'Left eyebrow is not visible - {left_eyebrow}')
+    if left_hand_middle_finger_tip is None:
+        print(f'Left hand middle finger tip is not visible - {left_hand_middle_finger_tip}')
+    if left_hand_middle_finger_mid is None:
+        print(f'Left hand middle finger mid is not visible - {left_hand_middle_finger_mid}')
+
+    left_eyebrow_coordinates = (int(left_eyebrow.x * width), int(left_eyebrow.y * height)) if left_eyebrow else None
+    left_hand_middle_finger_tip_coordinates = (int(left_hand_middle_finger_tip.x * width), int(left_hand_middle_finger_tip.y * height)) if left_hand_middle_finger_tip else None
+    left_hand_middle_finger_mid_coordinates = (int(left_hand_middle_finger_mid.x * width), int(left_hand_middle_finger_mid.y * height)) if left_hand_middle_finger_mid else None
+
+    is_distance_between_left_tip_eyebrow_correct = get_distance(left_eyebrow_coordinates, left_hand_middle_finger_tip_coordinates) <= 1.75 * get_distance(left_hand_middle_finger_tip_coordinates, left_hand_middle_finger_mid_coordinates) if left_eyebrow and left_hand_middle_finger_tip and left_hand_middle_finger_mid else False
+
     body_posture_check = body_posture > 170 and body_posture < 190
     back_posture_check = back_posture > 158 and back_posture < 210
     distance_between_rightshoulder_leftshoulder_check = distance_between_rightshoulder_leftshoulder < 47
     distance_between_rightknee_leftknee_check = distance_between_rightknee_leftknee < 25
     angle_between_wrist_elbow_shoulder_left_check = angle_between_wrist_elbow_shoulder_left > 280 and angle_between_wrist_elbow_shoulder_left < 340
 
-    if distance_left < 0 and distance_right < 0 and body_posture_check and back_posture_check and distance_between_rightshoulder_leftshoulder_check and distance_between_rightknee_leftknee_check and angle_between_wrist_elbow_shoulder_left_check:
+    if distance_left < 0 and distance_right < 0 and body_posture_check and back_posture_check and distance_between_rightshoulder_leftshoulder_check and \
+    distance_between_rightknee_leftknee_check and angle_between_wrist_elbow_shoulder_left_check and is_distance_between_left_tip_eyebrow_correct:
             cv2.putText(frame, f'Correct Baye Salute', (window_size[0]-800,window_size[1]-100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
             return True, frame
     else:
-        cv2.putText(frame, f'Incorrect Baye Salute', (window_size[0]-800,window_size[1]-350), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+        cv2.putText(frame, f'Incorrect Baye Salute', (window_size[0]-800,window_size[1]-400), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+        if not is_distance_between_left_tip_eyebrow_correct:
+            cv2.putText(frame, f'Incorrect right hand salute', (window_size[0]-800,window_size[1]-350), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         if not body_posture_check:
             cv2.putText(frame, f'Incorrect Body Posture', (window_size[0]-800,window_size[1]-300), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         if not back_posture_check:
@@ -717,17 +739,39 @@ def Daine_Salute(results, frame):
     distance_left = check_direction(left_toe_coordinates, left_heel_coordinates)
     distance_right = check_direction(right_toe_coordinates, right_heel_coordinates)
 
+    #condition for salute
+    left_eyebrow = results.face_landmarks.landmark[359] if results.face_landmarks else None
+    left_hand_middle_finger_tip = results.left_hand_landmarks.landmark[12] if results.left_hand_landmarks else None
+    left_hand_middle_finger_mid = results.left_hand_landmarks.landmark[11] if results.left_hand_landmarks else None
+
+    print('_'*45)
+    if left_eyebrow is None:
+        print(f'Left eyebrow is not visible - {left_eyebrow}')
+    if left_hand_middle_finger_tip is None:
+        print(f'Left hand middle finger tip is not visible - {left_hand_middle_finger_tip}')
+    if left_hand_middle_finger_mid is None:
+        print(f'Left hand middle finger mid is not visible - {left_hand_middle_finger_mid}')
+
+    left_eyebrow_coordinates = (int(left_eyebrow.x * width), int(left_eyebrow.y * height)) if left_eyebrow else None
+    left_hand_middle_finger_tip_coordinates = (int(left_hand_middle_finger_tip.x * width), int(left_hand_middle_finger_tip.y * height)) if left_hand_middle_finger_tip else None
+    left_hand_middle_finger_mid_coordinates = (int(left_hand_middle_finger_mid.x * width), int(left_hand_middle_finger_mid.y * height)) if left_hand_middle_finger_mid else None
+
+    is_distance_between_left_tip_eyebrow_correct = get_distance(left_eyebrow_coordinates, left_hand_middle_finger_tip_coordinates) <= 1.75 * get_distance(left_hand_middle_finger_tip_coordinates, left_hand_middle_finger_mid_coordinates) if left_eyebrow and left_hand_middle_finger_tip and left_hand_middle_finger_mid else False
+
     back_posture_check = back_posture > 158 and back_posture < 210
     body_posture_check = body_posture > 170 and body_posture < 196
     distance_between_rightshoulder_leftshoulder_check = distance_between_rightshoulder_leftshoulder < 55
     distance_between_rightknee_leftknee_check = distance_between_rightknee_leftknee < 25
     angle_between_wrist_elbow_shoulder_left_check = angle_between_wrist_elbow_shoulder_left > 250 and angle_between_wrist_elbow_shoulder_left < 310
 
-    if distance_left > 0 and distance_right > 0 and back_posture_check and body_posture_check and distance_between_rightshoulder_leftshoulder_check and distance_between_rightknee_leftknee_check and angle_between_wrist_elbow_shoulder_left_check:
+    if distance_left > 0 and distance_right > 0 and back_posture_check and body_posture_check and distance_between_rightshoulder_leftshoulder_check and \
+    distance_between_rightknee_leftknee_check and angle_between_wrist_elbow_shoulder_left_check and is_distance_between_left_tip_eyebrow_correct:
             cv2.putText(frame, f'Correct Daine Salute', (window_size[0]-800,window_size[1]-100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
             return True, frame
     else:
-        cv2.putText(frame, f'Incorrect Daine Salute', (window_size[0]-800,window_size[1]-350), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+        cv2.putText(frame, f'Incorrect Daine Salute', (window_size[0]-800,window_size[1]-400), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+        if not is_distance_between_left_tip_eyebrow_correct:
+            cv2.putText(frame, f'Incorrect right hand salute', (window_size[0]-800,window_size[1]-350), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         if not back_posture_check:
             cv2.putText(frame, f'Incorrect back posture', (window_size[0]-800,window_size[1]-300), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         if not body_posture_check:
@@ -741,10 +785,6 @@ def Daine_Salute(results, frame):
         return False, frame
 
 def front_salute(results, frame):
-    
-    # right_eyebrow = results.face_landmarks.landmark[130] if results.face_landmarks else None
-    # right_hand_middle_finger_tip = results.right_hand_landmarks.landmark[12] if results.right_hand_landmarks else None
-    # right_hand_middle_finger_mid = results.right_hand_landmarks.landmark[11] if results.right_hand_landmarks else None
 
     height, width, _ = frame.shape
 
@@ -794,10 +834,6 @@ def front_salute(results, frame):
     knee_left_coordinates = (int(knee_left.x * width), int(knee_left.y * height))
     knee_right_coordinates = (int(knee_right.x * width), int(knee_right.y * height))
 
-    # right_eyebrow_coordinates = (int(right_eyebrow.x * width), int(right_eyebrow.y * height)) if right_eyebrow else None
-    # right_hand_middle_finger_tip_coordinates = (int(right_hand_middle_finger_tip.x * width), int(right_hand_middle_finger_tip.y * height)) if right_hand_middle_finger_tip else None
-    # right_hand_middle_finger_mid_coordinates = (int(right_hand_middle_finger_mid.x * width), int(right_hand_middle_finger_mid.y * height)) if right_hand_middle_finger_mid else None
-
     #get the center of the body
     shoulder_center_coordinates = midpoint(shoulder_left_coordinates, shoulder_right_coordinates)
     hip_center_coordinates = midpoint(hip_left_coordinates, hip_right_coordinates)
@@ -815,11 +851,48 @@ def front_salute(results, frame):
     distance_between_leftwrist_lefthip = get_distance(wrist_left_coordinates, hip_left_coordinates)
     distance_between_rightwrist_righthip = get_distance(wrist_right_coordinates, hip_right_coordinates)
 
-    # is_distance_between_right_tip_eyebrow_correct = get_distance(right_eyebrow_coordinates, right_hand_middle_finger_tip_coordinates) <= 1.75 * get_distance(right_hand_middle_finger_tip_coordinates, right_hand_middle_finger_mid_coordinates) if right_eyebrow and right_hand_middle_finger_tip and right_hand_middle_finger_mid else False
-
     #TODO: how to detect hands are rolled in a box or not
     #CHANGE THESE VALUES to make them more accurate for detection
     
+    #adding the distance condition for salute
+
+    #get coordinates of the left eyebrow (left is right in video so calculate for left)
+
+    # right_eyebrow = results.face_landmarks.landmark[130] if results.face_landmarks else None
+    # right_hand_middle_finger_tip = results.right_hand_landmarks.landmark[12] if results.right_hand_landmarks else None
+    # right_hand_middle_finger_mid = results.right_hand_landmarks.landmark[11] if results.right_hand_landmarks else None
+
+    left_eyebrow = results.face_landmarks.landmark[359] if results.face_landmarks else None
+    left_hand_middle_finger_tip = results.left_hand_landmarks.landmark[12] if results.left_hand_landmarks else None
+    left_hand_middle_finger_mid = results.left_hand_landmarks.landmark[11] if results.left_hand_landmarks else None
+
+    print('_'*45)
+    # if right_eyebrow is None:
+    #     print(f'Right eyebrow is not visible - {right_eyebrow}')
+    # if right_hand_middle_finger_tip is None:
+    #     print(f'Right hand middle finger tip is not visible - {right_hand_middle_finger_tip}')
+    # if right_hand_middle_finger_mid is None:
+    #     print(f'Right hand middle finger mid is not visible - {right_hand_middle_finger_mid}')
+    if left_eyebrow is None:
+        print(f'Left eyebrow is not visible - {left_eyebrow}')
+    if left_hand_middle_finger_tip is None:
+        print(f'Left hand middle finger tip is not visible - {left_hand_middle_finger_tip}')
+    if left_hand_middle_finger_mid is None:
+        print(f'Left hand middle finger mid is not visible - {left_hand_middle_finger_mid}')
+
+    # right_eyebrow_coordinates = (int(right_eyebrow.x * width), int(right_eyebrow.y * height)) if right_eyebrow else None
+    # right_hand_middle_finger_tip_coordinates = (int(right_hand_middle_finger_tip.x * width), int(right_hand_middle_finger_tip.y * height)) if right_hand_middle_finger_tip else None
+    # right_hand_middle_finger_mid_coordinates = (int(right_hand_middle_finger_mid.x * width), int(right_hand_middle_finger_mid.y * height)) if right_hand_middle_finger_mid else None
+
+    left_eyebrow_coordinates = (int(left_eyebrow.x * width), int(left_eyebrow.y * height)) if left_eyebrow else None
+    left_hand_middle_finger_tip_coordinates = (int(left_hand_middle_finger_tip.x * width), int(left_hand_middle_finger_tip.y * height)) if left_hand_middle_finger_tip else None
+    left_hand_middle_finger_mid_coordinates = (int(left_hand_middle_finger_mid.x * width), int(left_hand_middle_finger_mid.y * height)) if left_hand_middle_finger_mid else None
+
+    # cv2.circle(frame, left_eyebrow_coordinates, 10, (0, 255, 0), -1)
+    # cv2.circle(frame, right_eyebrow_coordinates, 20, (0, 255, 0), 2)  
+    # is_distance_between_right_tip_eyebrow_correct = get_distance(right_eyebrow_coordinates, right_hand_middle_finger_tip_coordinates) <= 1.75 * get_distance(right_hand_middle_finger_tip_coordinates, right_hand_middle_finger_mid_coordinates) if right_eyebrow and right_hand_middle_finger_tip and right_hand_middle_finger_mid else False
+    is_distance_between_left_tip_eyebrow_correct = get_distance(left_eyebrow_coordinates, left_hand_middle_finger_tip_coordinates) <= 1.75 * get_distance(left_hand_middle_finger_tip_coordinates, left_hand_middle_finger_mid_coordinates) if left_eyebrow and left_hand_middle_finger_tip and left_hand_middle_finger_mid else False
+
     back_posture_check = back_posture > 160 and back_posture < 210
     body_posture_check = body_posture > 160 and body_posture < 200
     distance_between_knees_check = distance_between_knees > 25 and distance_between_knees < 80
@@ -828,12 +901,13 @@ def front_salute(results, frame):
     angle_between_wrist_elbow_shoulder_left_check = angle_between_wrist_elbow_shoulder_left > 308 and angle_between_wrist_elbow_shoulder_left < 323
     
     if back_posture_check and body_posture_check and distance_between_knees_check and \
-        distance_between_ankles_check and distance_between_rightwrist_righthip_check and angle_between_wrist_elbow_shoulder_left_check:
+        distance_between_ankles_check and distance_between_rightwrist_righthip_check and angle_between_wrist_elbow_shoulder_left_check and is_distance_between_left_tip_eyebrow_correct:
         cv2.putText(frame, "Correct Front Salute Position", (window_size[0]-600,window_size[1]-100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
         return True, frame
     else:
-        cv2.putText(frame, "Incorrect Front Salute Position", (window_size[0]-600,window_size[1]-350), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
-        
+        cv2.putText(frame, "Incorrect Front Salute Position", (window_size[0]-600,window_size[1]-400), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+        if is_distance_between_left_tip_eyebrow_correct == False:
+            cv2.putText(frame, "Incorrect Right Hand Position", (window_size[0]-800,window_size[1]-350), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         if back_posture_check == False:
             cv2.putText(frame, "Incorrect Back Posture", (window_size[0]-800,window_size[1]-300), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         if body_posture_check == False:
