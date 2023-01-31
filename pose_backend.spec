@@ -8,7 +8,7 @@ a = Analysis(
     ['pose_backend.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[('templates', 'templates')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

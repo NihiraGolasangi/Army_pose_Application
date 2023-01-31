@@ -17,7 +17,8 @@ start_angle = 0
 choice = 0
 today = datetime.datetime.now().strftime("%Y_%m_%d-%I_%H_%M_%S")
 activity_check_flag = False
-
+correct = 0
+print(f'correct is initialised to {correct}')
 
 name_dict = {
     1: "Savdhan",
@@ -118,7 +119,7 @@ def gen_frames_pose(a=1):  # generate frame by frame from camera
             choice = a
             # choice = request.args.get('choice')
             global correct
-            correct = 0
+            # correct = 0
 
             # Perform activity according to user input
             global activity_check_flag
@@ -168,8 +169,8 @@ def gen_frames_pose(a=1):  # generate frame by frame from camera
                 cv2.putText(frame, "Please ensure full body is visible to the camera",
                             (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
 
-            # commenting out this line as it might cause delay in execution
-            # util.draw_styled_landmarks(frame, results)
+            # commenting out this line as it might cause delay in execution - plot
+            util.draw_styled_landmarks(frame, results)
 
             # ================================= WRITE VIDEOS ==============================================
 
@@ -220,6 +221,10 @@ def video_feed():
 @app.route('/thankyou')
 def thankyou():
     global correct
+    if correct:
+        print(f'correct was once correct - {correct}')
+    else:
+        print(f'correct was never correct - {correct}')
     filename=None 
     try:
         if correct == 1:
