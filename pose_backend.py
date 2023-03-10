@@ -125,7 +125,7 @@ def gen_frames_pose(a=1):  # generate frame by frame from camera
             global activity_check_flag
             if results.pose_landmarks:
                 if choice == 1:
-                    activity_check_flag, frame = util.savdhan_front(
+                    activity_check_flag, frame = util.savdhan(
                         results, frame)
                 elif choice == 2:
                     activity_check_flag, frame = util.vishram(results, frame)

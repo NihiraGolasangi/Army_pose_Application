@@ -1107,6 +1107,14 @@ def Daine_Salute(results, frame):
         return False, frame
 
 
+def front_salute_modified(results, frame):
+    
+    height, width, _ = frame.shape
+
+    
+
+    pass
+
 def front_salute(results, frame):
 
     height, width, _ = frame.shape
