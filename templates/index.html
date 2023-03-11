@@ -1,53 +1,172 @@
-<body>
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-8  offset-lg-2">
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Page Title</title>
+		<style>
+			/* body {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				height: 100vh;
+			} */
 
-				<h2 class="title" style="color:rgb(88, 88, 189)">Please Perform the {{ activity }} activity, {{ name }}</h2>
-				
-				<img src="{{ url_for('video_feed') }}" style = "width:100%; height:80%">
+			body {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				height: 100vh;
+				margin: 0;
+			}
 
-				<form method="get" action="{{ url_for('thankyou') }}">
-					<div class = "button">
-					<input type="submit" value="Done" name="Done" style="height:40px; width:500px; background-color: #9dd0f1;">
-					</div>
-				</form>
+			/* .container {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				background-color: #f1f1f1;
+				padding: 20px;
+				border-radius: 10px;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+			} */
+
+			.container {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			background-color: #f1f1f1;
+			padding: 20px;
+			border-radius: 10px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+			height: 80vh;
+			max-width: 90vw;
+		}
+
+			/* .title {
+				margin-bottom: 20px;
+				text-align: center;
+			} */
+
+			.title {
+			margin-bottom: 20px;
+			text-align: center;
+			font-size: 2.5rem;
+			line-height: 1.2;
+		}
+
+			/* .loader {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				margin: 20px 0;
+			}
+
+			.loader__icon {
+				border: 10px solid #f3f3f3;
+				border-top: 10px solid #3498db;
+				border-radius: 50%;
+				width: 60px;
+				height: 60px;
+				animation: spin 2s linear infinite;
+			} */
+
+			.loader {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			margin: 20px 0;
+		}
+
+			.loader__icon {
+				border: 10px solid #f3f3f3;
+				border-top: 10px solid #3498db;
+				border-radius: 50%;
+				width: 60px;
+				height: 60px;
+				animation: spin 2s linear infinite;
+		}
+
+			@keyframes spin {
+				0% {
+					transform: rotate(0deg);
+				}
+				100% {
+					transform: rotate(360deg);
+				}
+			}
+
+			.button {
+				text-align: center;
+				margin-top: 20px;
+			}
+
+			form .button input:hover {
+				transform: scale(0.99);
+				background-color: #9dd0f1;
+			}
+
+			@media (max-width: 768px) {
+				.container {
+					width: 100%;
+				}
+			}
+			@media (max-width: 768px) {
+				#video-feed {
+					height: 100%;
+					width: 100%;
+					display: none;
+  }
+}
+		</style>
+	</head>
+
+	<body>
+		<div class="container">
+			<h2 class="title" style="color:rgb(88, 88, 189)">
+				Please Perform the {{ activity }} activity, {{ name }}
+			</h2>
+
+			<div class="loader">
+				<div class="loader__icon"></div>
+				<p>Loading...</p>
 			</div>
+
+			<img
+				id="video-feed"
+				src="{{ url_for('video_feed') }}"
+				style="height: 80%; width: 100%; display: none;"
+			/>
+
+			<form method="get" action="{{ url_for('thankyou') }}">
+				<div class="button">
+					<input
+						type="submit"
+						value="Done"
+						name="Done"
+						style="height:40px; width:500px; background-color: #9dd0f1;"
+					/>
+				</div>
+			</form>
 		</div>
-	</div>
-</body>
 
+		<script>
+			// show loading icon
+			document.querySelector(".loader").style.display = "flex";
+			// hide video feed
+			document.getElementById("video-feed").style.display = "none";
 
-<!-- ********************STYLE******************** -->
-<style>
-	/* *{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins',sans-serif;
-} */
-        body{
-            /* height: 100vh; */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            /* background: linear-gradient(135deg, #71b7e6, #9b59b6); */
-		}
-		.title{
-			margin-bottom: 15px;
-			margin-top: 20px;
-			text-align: center;
-		}
-		.button{
-			text-align: center;
-			margin-top: 8px;
-		}
-        form .button input:hover{
-            transform: scale(0.99);
-            background: linear-gradient(-135deg, #71b7e6, #9b59b6);
-	}		
-</style>
+			// function to hide loading icon and show video feed
+			function showVideoFeed() {
+				document.querySelector(".loader").style.display = "none";
+				document.getElementById("video-feed").style.display = "block";
+			}
 
-
-
+			// event listener to call showVideoFeed function when video feed image is loaded
+			document
+				.getElementById("video-feed")
+				.addEventListener("load", showVideoFeed);
+		</script>

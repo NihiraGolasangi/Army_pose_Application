@@ -135,8 +135,11 @@ def gen_frames_pose(a=1):  # generate frame by frame from camera
                 elif choice == 4:
                     activity_check_flag, frame = util.Daine_Salute(
                         results, frame)
+                # elif choice == 5:
+                #     activity_check_flag, frame = util.front_salute(
+                #         results, frame)
                 elif choice == 5:
-                    activity_check_flag, frame = util.front_salute(
+                    activity_check_flag, frame = util.front_salute_modified(
                         results, frame)
                 elif choice == 6:
                     if not chk:
