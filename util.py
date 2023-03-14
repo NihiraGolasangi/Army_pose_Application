@@ -9,7 +9,6 @@ mp_drawing = mp.solutions.drawing_utils  # Drawing utilities
 
 window_size = (0, 0)
 
-
 def get_name_of_user():
     name = input("Enter your name: ")
     # validate name
@@ -17,7 +16,6 @@ def get_name_of_user():
         print("Invalid name. Please enter again (alphabets only).")
         name = input("Enter your name: ")
     return name
-
 
 def get_id_of_user():
     ID = input("Enter your ID: ")
@@ -27,7 +25,6 @@ def get_id_of_user():
         ID = input("Enter your ID: ")
     return ID
 
-
 def get_activity_name():
     activity_name = input("Enter the name of the activity: ")
     # validate activity name
@@ -35,7 +32,6 @@ def get_activity_name():
         print("Invalid activity name. Please enter again (alphabets only).")
         activity_name = input("Enter the name of the activity: ")
     return activity_name
-
 
 def get_user_choice():
     position = ['Savdhan', 'Vishram', 'Baye Salute', 'Daine Salute', 'Front Salute',
@@ -56,7 +52,6 @@ def get_user_choice():
         print("Invalid choice. Please enter again [1,8].")
         choice = input("Enter your choice: ")
     return int(choice), position[int(choice) - 1]
-
 
 def get_angle_between_three_points(landmark1, landmark2, landmark3):
     """
@@ -81,7 +76,6 @@ def get_angle_between_three_points(landmark1, landmark2, landmark3):
         angle += 360
     return angle
 
-
 def get_distance(p, q):
     """
     Return euclidean distance between points p and q
@@ -96,18 +90,15 @@ def get_distance(p, q):
     distance = s_sq_difference ** 0.5
     return distance
 
-
 def check_direction(landmark1, landmark2):
     x1, y1 = landmark1
     x2, y2 = landmark2
     return x1 - x2
 
-
 def midpoint(p1, p2):
     x1, y1 = p1
     x2, y2 = p2
     return (x1 + x2) // 2, (y1 + y2) // 2
-
 
 def draw_landmarks(image, results):
     mp_drawing.draw_landmarks(
@@ -118,7 +109,6 @@ def draw_landmarks(image, results):
         image, results.left_hand_landmarks, mp_holistic.HAND_CONNECTIONS)  # Draw left hand connections
     mp_drawing.draw_landmarks(
         image, results.right_hand_landmarks, mp_holistic.HAND_CONNECTIONS)  # Draw right hand connections
-
 
 def draw_styled_landmarks(image, results):
     # Draw face connections
@@ -143,7 +133,6 @@ def draw_styled_landmarks(image, results):
                                   color=(245, 117, 66), thickness=2, circle_radius=4),
                               mp_drawing.DrawingSpec(color=(245, 66, 230), thickness=2, circle_radius=2))
 
-
 def run_mediapipe_holistic(frame):
     with mp_holistic.Holistic(
         min_detection_confidence=0.3,
@@ -154,7 +143,6 @@ def run_mediapipe_holistic(frame):
         # draw_landmarks(image, results)
         return results, image
 
-
 def mediapipe_detection(image, model):
     # COLOR CONVERSION BGR 2 RGB
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -164,7 +152,6 @@ def mediapipe_detection(image, model):
     # COLOR CONVERSION RGB 2 BGR
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     return image, results
-
 
 # =============================================================== CHECK POSITIONS ===============================================================
 
@@ -271,7 +258,6 @@ def vishram(results, frame):
             cv2.putText(frame, "Wrists should not be visible", (
                 window_size[0]-800, window_size[1]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
         return False, frame
-
 
 def savdhan(results, frame):
 
@@ -408,16 +394,15 @@ def savdhan(results, frame):
             cv2.putText(frame, "Put ankles close together", (
                 window_size[0]-600, window_size[1]-150), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         if not distance_between_rightwrist_righthip_check:
-            cv2.putText(frame, "Put right wrist close to right hip", (
+            cv2.putText(frame, "Put left wrist close to left hip", (
                 window_size[0]-600, window_size[1]-100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         if not distance_between_leftwrist_lefthip_check:
-            cv2.putText(frame, "Put left wrist close to left hip", (
+            cv2.putText(frame, "Put right wrist close to right hip", (
                 window_size[0]-600, window_size[1]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         if not angle_between_ankle_check:
             cv2.putText(frame, "Incorrect angle between ankles", (
                 window_size[0]-600, window_size[1]-0), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         return False, frame
-
 
 def savdhan_back(results, frame):
     if results.pose_landmarks is None:
@@ -518,7 +503,6 @@ def savdhan_back(results, frame):
             return False, frame
     else:
         return False, frame
-
 
 def right_side_savdhan(results, frame):
     # tip of feet - heel of feet > 0 for both feet
@@ -645,7 +629,6 @@ def right_side_savdhan(results, frame):
             window_size[0]-500, window_size[1]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         return False, frame
 
-
 def left_side_savdhan(results, frame):
 
     shoulder_right = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_SHOULDER]
@@ -766,8 +749,7 @@ def left_side_savdhan(results, frame):
             window_size[0]-500, window_size[1]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         return False, frame
 
-
-def baye_salute(results, frame):
+def baye_salute_old(results, frame):
     # initially right side facing
     # salute towards camera
     # hand won't be visible directly
@@ -945,8 +927,7 @@ def baye_salute(results, frame):
                 window_size[0]-800, window_size[1]-100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         return False, frame
 
-
-def Daine_Salute(results, frame):
+def daine_Salute_old(results, frame):
     shoulder_right = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_SHOULDER]
     elbow_right = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_ELBOW]
     wrist_right = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_WRIST]
@@ -1106,7 +1087,6 @@ def Daine_Salute(results, frame):
                 window_size[0]-800, window_size[1]-100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         return False, frame
 
-
 def front_salute_modified(results, frame):
     
     height, width, _ = frame.shape
@@ -1126,8 +1106,18 @@ def front_salute_modified(results, frame):
     hip_left = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_HIP]
     ear_right = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_EAR]
     ear_left = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_EAR]
+    knee_right = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_KNEE]
+    knee_left = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_KNEE]
+    ankle_right = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_ANKLE]
+    ankle_left = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_ANKLE]
 
     #TODO: add visibility checks for all the landmarks so that user has to come closer
+    if shoulder_right.visibility < 0.7 or shoulder_left.visibility < 0.7 or elbow_right.visibility < 0.7 \
+        or elbow_left.visibility < 0.7 or wrist_right.visibility < 0.7 or wrist_left.visibility < 0.7 \
+        or hip_right.visibility < 0.7 or hip_left.visibility < 0.7 \
+        or ankle_right.visibility > 0.3 or ankle_left.visibility > 0.3:
+        cv2.putText(frame, f'Please come closer. Only upper body should be visible', (window_size[0]-800, window_size[1]-100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA) 
+        return False, frame
 
     shoulder_right_coordinates = (int(shoulder_right.x * width), int(shoulder_right.y * height))
     shoulder_left_coordinates = (int(shoulder_left.x * width), int(shoulder_left.y * height))
@@ -1147,7 +1137,7 @@ def front_salute_modified(results, frame):
     back_posture = get_angle_between_three_points(ear_center_coordinates, shoulder_center_coordinates, hip_center_coordinates)
     
     angle_between_wrist_elbow_shoulder_left = get_angle_between_three_points(wrist_left_coordinates, elbow_left_coordinates, shoulder_left_coordinates)
-
+    angle_between_wrist_elbow_shoulder_right = get_angle_between_three_points(wrist_right_coordinates, elbow_right_coordinates, shoulder_right_coordinates)
 
     left_eyebrow = results.face_landmarks.landmark[359] if results.face_landmarks else None
     left_hand_middle_finger_tip = results.left_hand_landmarks.landmark[12] if results.left_hand_landmarks else None
@@ -1178,8 +1168,9 @@ def front_salute_modified(results, frame):
         back_posture_check = back_posture > 160 and back_posture < 210
         distance_between_rightwrist_righthip_check = distance_between_rightwrist_righthip > 65 and distance_between_rightwrist_righthip < 90
         angle_between_wrist_elbow_shoulder_left_check = angle_between_wrist_elbow_shoulder_left > 308 and angle_between_wrist_elbow_shoulder_left < 323
+        angle_between_wrist_elbow_shoulder_right_check = angle_between_wrist_elbow_shoulder_right > 165 and angle_between_wrist_elbow_shoulder_right < 195
 
-        if back_posture_check and distance_between_rightwrist_righthip_check and angle_between_wrist_elbow_shoulder_left_check and is_distance_between_left_tip_eyebrow_correct:
+        if back_posture_check and distance_between_rightwrist_righthip_check and angle_between_wrist_elbow_shoulder_left_check and is_distance_between_left_tip_eyebrow_correct and angle_between_wrist_elbow_shoulder_right_check:
             cv2.putText(frame, "Correct Front Salute Position",
                         (window_size[0]-600, window_size[1]-100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
             return True, frame
@@ -1379,14 +1370,13 @@ def front_salute(results, frame):
             cv2.putText(frame, "Incorrect Distance Between Ankles", (
                 window_size[0]-800, window_size[1]-150), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         if distance_between_rightwrist_righthip_check == False:
-            cv2.putText(frame, "Incorrect Distance Between Right Wrist and Right Hip", (
+            cv2.putText(frame, "Incorrect Distance Between left Wrist and left Hip", (
                 window_size[0]-800, window_size[1]-100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         if angle_between_wrist_elbow_shoulder_left_check == False:
-            cv2.putText(frame, "Incorrect Angle Between Wrist, Elbow and Shoulder Left", (
+            cv2.putText(frame, "Incorrect Angle Between right Wrist, Elbow and Shoulder", (
                 window_size[0]-800, window_size[1]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
 
         return False, frame
-
 
 def Daine_transition_pos1(results, frame):
     # to check leg distance and left facing
@@ -1503,7 +1493,6 @@ def Daine_transition_pos1(results, frame):
             window_size[0]-500, window_size[1]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         return False, frame
 
-
 def Baye_transition_pos1(results, frame):
     # to check leg distance and left facing
     # distance between left leg feet and floor should be minimal (we will use angle approach around 0-10)
@@ -1619,7 +1608,6 @@ def Baye_transition_pos1(results, frame):
             window_size[0]-500, window_size[1]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         return False, frame
 
-
 def Piche_position(results, frame):
     # check if face landmarks and face is visible
     if results.face_landmarks is None:
@@ -1730,7 +1718,6 @@ def Piche_position(results, frame):
     else:
         return False, frame
 
-
 def Mud_fnc(var1, var2, var3, mud_array=[0, 0, 0]):
     flag = False
     if var1:
@@ -1742,7 +1729,6 @@ def Mud_fnc(var1, var2, var3, mud_array=[0, 0, 0]):
     if sum(mud_array) == 3:
         flag = True
     return flag, mud_array
-
 
 def Khade_Khade_Daine_Mud(results, frame, mud_array):
     var1, frame = savdhan(results, frame)
@@ -1760,7 +1746,6 @@ def Khade_Khade_Daine_Mud(results, frame, mud_array):
         cv2.putText(frame, f'Khade Khade Daine Mud',
                     (window_size[0]-550, window_size[1]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
     return flag, frame, mud_array
-
 
 def Khade_Khade_Baye_Mud(results, frame, mud_array):
 
@@ -1780,7 +1765,6 @@ def Khade_Khade_Baye_Mud(results, frame, mud_array):
                     (window_size[0]-550, window_size[1]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
     return flag, frame, mud_array
 
-
 def Khade_Khade_Peeche_Mud(results, frame, mud_array):
     var1, frame = savdhan(results, frame)
     if var1:
@@ -1797,3 +1781,11 @@ def Khade_Khade_Peeche_Mud(results, frame, mud_array):
         cv2.putText(frame, f'Khade Khade Peeche Mud complete',
                     (window_size[0]-550, window_size[1]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
     return flag, frame, mud_array
+
+# ? Nihira add your code here
+
+# def Daine_salute(results, frame):
+# pass
+
+# def Baye_salute(results, frame):
+# pass

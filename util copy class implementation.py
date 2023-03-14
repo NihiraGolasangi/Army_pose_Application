@@ -8,7 +8,7 @@ mp_holistic = mp.solutions.holistic      # Holistic model
 mp_drawing = mp.solutions.drawing_utils  # Drawing utilities
 
 window_size = (0, 0)
-
+        
 
 def get_name_of_user():
     name = input("Enter your name: ")
@@ -387,13 +387,14 @@ def savdhan(results, frame):
     if back_posture_check and body_posture_check and distance_between_knees_check and \
         distance_between_ankles_check and distance_between_rightwrist_righthip_check and \
             distance_between_leftwrist_lefthip_check and angle_between_ankle_check:
-        
+        print(f'angle between ankle: {angle_between_ankle}')
         cv2.putText(frame, "Correct Front Savdhan Position",
                     (window_size[0]-800, window_size[1]-100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
         return True, frame
     else:
-        
-        cv2.putText(frame, "Incorrect Front Savdhan Position", (window_size[0]-800, window_size[1]-350), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+        print(f'angle between ankle: {angle_between_ankle}')
+        cv2.putText(frame, "Incorrect Front Savdhan Position",
+                    (window_size[0]-800, window_size[1]-350), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         if not back_posture_check:
             cv2.putText(frame, "Incorrect back posture", (
                 window_size[0]-600, window_size[1]-300), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
@@ -1115,6 +1116,7 @@ def front_salute_modified(results, frame):
     # ? distance betweeen wrist and hip should be less (need to find out the exact distance)
     # ? everything below the waist should ignored 
     
+    
     shoulder_right = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_SHOULDER]
     shoulder_left = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_SHOULDER]
     elbow_right = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_ELBOW]
@@ -1125,7 +1127,18 @@ def front_salute_modified(results, frame):
     hip_left = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_HIP]
     ear_right = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_EAR]
     ear_left = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_EAR]
+    knee_right = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_KNEE]
+    knee_left = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_KNEE]
+    ankle_right = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_ANKLE]
+    ankle_left = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_ANKLE]
 
+    #TODO: add visibility checks for all the landmarks so that user has to come closer
+    if shoulder_right.visibility < 0.7 or shoulder_left.visibility < 0.7 or elbow_right.visibility < 0.7 \
+        or elbow_left.visibility < 0.7 or wrist_right.visibility < 0.7 or wrist_left.visibility < 0.7 \
+        or hip_right.visibility < 0.7 or hip_left.visibility < 0.7 or ear_right.visibility < 0.7 or ear_left.visibility < 0.7 \
+        or ankle_right.visibility > 0.3 or ankle_left.visibility > 0.3:
+        cv2.putText(frame, f'Please come closer. Only upper body should be visible', (window_size[0]-800, window_size[1]-100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA) 
+        return False, frame
 
     shoulder_right_coordinates = (int(shoulder_right.x * width), int(shoulder_right.y * height))
     shoulder_left_coordinates = (int(shoulder_left.x * width), int(shoulder_left.y * height))
@@ -1143,9 +1156,9 @@ def front_salute_modified(results, frame):
     ear_center_coordinates = (int((ear_right.x + ear_left.x) * width / 2), int((ear_right.y + ear_left.y) * height / 2))
 
     back_posture = get_angle_between_three_points(ear_center_coordinates, shoulder_center_coordinates, hip_center_coordinates)
-    #TODO: which hand is which (is left as left or it is right)
+    
     angle_between_wrist_elbow_shoulder_left = get_angle_between_three_points(wrist_left_coordinates, elbow_left_coordinates, shoulder_left_coordinates)
-
+    angle_between_wrist_elbow_shoulder_right = get_angle_between_three_points(wrist_right_coordinates, elbow_right_coordinates, shoulder_right_coordinates)
 
     left_eyebrow = results.face_landmarks.landmark[359] if results.face_landmarks else None
     left_hand_middle_finger_tip = results.left_hand_landmarks.landmark[12] if results.left_hand_landmarks else None
@@ -1171,11 +1184,14 @@ def front_salute_modified(results, frame):
 
         distance_between_rightwrist_righthip = get_distance(wrist_right_coordinates, hip_right_coordinates)
         
-        back_posture_check = back_posture > 160 and back_posture < 210
-        distance_between_rightwrist_righthip_check = distance_between_rightwrist_righthip > 33 and distance_between_rightwrist_righthip < 55
-        angle_between_wrist_elbow_shoulder_left_check = angle_between_wrist_elbow_shoulder_left > 308 and angle_between_wrist_elbow_shoulder_left < 323
+        # print(f'distance_between_rightwrist_righthip: {distance_between_rightwrist_righthip}')
 
-        if back_posture_check and distance_between_rightwrist_righthip_check and angle_between_wrist_elbow_shoulder_left_check and is_distance_between_left_tip_eyebrow_correct:
+        back_posture_check = back_posture > 160 and back_posture < 210
+        distance_between_rightwrist_righthip_check = distance_between_rightwrist_righthip > 65 and distance_between_rightwrist_righthip < 90
+        angle_between_wrist_elbow_shoulder_left_check = angle_between_wrist_elbow_shoulder_left > 308 and angle_between_wrist_elbow_shoulder_left < 323
+        angle_between_wrist_elbow_shoulder_right_check = angle_between_wrist_elbow_shoulder_right > 165 and angle_between_wrist_elbow_shoulder_right < 195
+
+        if back_posture_check and distance_between_rightwrist_righthip_check and angle_between_wrist_elbow_shoulder_left_check and is_distance_between_left_tip_eyebrow_correct and angle_between_wrist_elbow_shoulder_right_check:
             cv2.putText(frame, "Correct Front Salute Position",
                         (window_size[0]-600, window_size[1]-100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
             return True, frame
@@ -1185,16 +1201,16 @@ def front_salute_modified(results, frame):
                         (window_size[0]-600, window_size[1]-400), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
             if is_distance_between_left_tip_eyebrow_correct == False:
                 cv2.putText(frame, "Incorrect Right Hand Position", (
-                    window_size[0]-800, window_size[1]-350), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+                    window_size[0]-1000, window_size[1]-350), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
             if back_posture_check == False:
                 cv2.putText(frame, "Incorrect Back Posture", (
                     window_size[0]-800, window_size[1]-300), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
             if distance_between_rightwrist_righthip_check == False:
                 cv2.putText(frame, "Incorrect Distance Between Right Wrist and Right Hip", (
-                    window_size[0]-800, window_size[1]-100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+                    window_size[0]-1200, window_size[1]-100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
             if angle_between_wrist_elbow_shoulder_left_check == False:
                 cv2.putText(frame, "Incorrect Angle Between Wrist, Elbow and Shoulder Left", (
-                    window_size[0]-800, window_size[1]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+                    window_size[0]-1200, window_size[1]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
 
             return False, frame
 
@@ -1306,8 +1322,10 @@ def front_salute(results, frame):
     # right_hand_middle_finger_mid = results.right_hand_landmarks.landmark[11] if results.right_hand_landmarks else None
 
     left_eyebrow = results.face_landmarks.landmark[359] if results.face_landmarks else None
-    left_hand_middle_finger_tip = results.left_hand_landmarks.landmark[12] if results.left_hand_landmarks else None
-    left_hand_middle_finger_mid = results.left_hand_landmarks.landmark[11] if results.left_hand_landmarks else None
+    left_hand_middle_finger_tip = results.left_hand_landmarks.landmark[
+        12] if results.left_hand_landmarks else None
+    left_hand_middle_finger_mid = results.left_hand_landmarks.landmark[
+        11] if results.left_hand_landmarks else None
 
     print('_'*45)
     # if right_eyebrow is None:
@@ -1380,7 +1398,6 @@ def front_salute(results, frame):
                 window_size[0]-800, window_size[1]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
 
         return False, frame
-
 
 def Daine_transition_pos1(results, frame):
     # to check leg distance and left facing
