@@ -1448,14 +1448,14 @@ def baye_salute_modified(results, frame):
     ear_left = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_EAR]
     knee_left = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_KNEE]
     knee_right = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_KNEE]
+    nose = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.NOSE]
 
     if shoulder_right.visibility < 0.7 or elbow_right.visibility < 0.7 or wrist_right.visibility < 0.7 or \
             shoulder_left.visibility < 0.7 or elbow_left.visibility < 0.7 or wrist_left.visibility < 0.7 or \
             hip_right.visibility < 0.7 or hip_left.visibility < 0.7 or ankle_right.visibility < 0.7 or \
             ankle_left.visibility < 0.7 or ear_right.visibility < 0.7 or ear_left.visibility < 0.7 or \
-            knee_left.visibility < 0.7 or knee_right.visibility < 0.7:
-        cv2.putText(frame, "Take a correct stance", (int(width/2),
-                    int(height/2)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+            knee_left.visibility < 0.7 or knee_right.visibility < 0.7 or nose.visibility < 0.7:
+        cv2.putText(frame, "Entire body not visible", (int(width/2), int(height/2)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
         return False, frame
 
     shoulder_right_coordinates = (
@@ -1480,10 +1480,9 @@ def baye_salute_modified(results, frame):
     ear_right_coordinates = (int(ear_right.x * width),
                              int(ear_right.y * height))
     ear_left_coordinates = (int(ear_left.x * width), int(ear_left.y * height))
-    knee_left_coordinates = (int(knee_left.x * width),
-                             int(knee_left.y * height))
-    knee_right_coordinates = (
-        int(knee_right.x * width), int(knee_right.y * height))
+    knee_left_coordinates = (int(knee_left.x * width), int(knee_left.y * height))
+    knee_right_coordinates = (int(knee_right.x * width), int(knee_right.y * height))
+    nose_coordinates = (int(nose.x * width), int(nose.y * height))
 
     # get the center of the body
     shoulder_center_coordinates = midpoint(
@@ -1516,22 +1515,34 @@ def baye_salute_modified(results, frame):
         wrist_left_coordinates, hip_left_coordinates)
     distance_between_rightwrist_righthip = get_distance(
         wrist_right_coordinates, hip_right_coordinates)
+    
+    distance_nose_ear_left = check_direction(
+        nose_coordinates, ear_left_coordinates)
 
     back_posture_check = back_posture > 160 and back_posture < 210
     body_posture_check = body_posture > 160 and body_posture < 200
     distance_between_knees_check = distance_between_knees > 25 and distance_between_knees < 80
     distance_between_ankles_check = distance_between_ankles > 5 and distance_between_ankles < 80
     distance_between_rightwrist_righthip_check = distance_between_rightwrist_righthip > 33 and distance_between_rightwrist_righthip < 55
+    distance_nose_ear_left_check = distance_nose_ear_left < 0
+
     angle_between_wrist_elbow_shoulder_left_check = angle_between_wrist_elbow_shoulder_left > 308 and angle_between_wrist_elbow_shoulder_left < 323
-    angle_between_wrist_elbow_shoulder_right_check = angle_between_wrist_elbow_shoulder_right > 170 and angle_between_wrist_elbow_shoulder_right < 210
+    angle_between_wrist_elbow_shoulder_right_check = angle_between_wrist_elbow_shoulder_right > 165 and angle_between_wrist_elbow_shoulder_right < 210
+    
+    #? for Baye salute check for distance_nose_left
+    #? for Daine salute check for distance_nose_right
+    print(f'distance_nose_ear_left: {distance_nose_ear_left}')
 
     if back_posture_check and body_posture_check and distance_between_knees_check and \
-            distance_between_ankles_check and distance_between_rightwrist_righthip_check and angle_between_wrist_elbow_shoulder_left_check and angle_between_wrist_elbow_shoulder_right_check:
-        cv2.putText(frame, "Correct Front Salute Position",
+            distance_between_ankles_check and distance_between_rightwrist_righthip_check and \
+            angle_between_wrist_elbow_shoulder_left_check and angle_between_wrist_elbow_shoulder_right_check and \
+            distance_nose_ear_left_check:
+        cv2.putText(frame, "Correct Baye Salute Position",
                     (window_size[0]-600, window_size[1]-100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
         return True, frame
+    
     else:
-        cv2.putText(frame, "Incorrect Front Salute Position",
+        cv2.putText(frame, "Incorrect Baye Salute Position",
                     (window_size[0]-600, window_size[1]-400), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         if back_posture_check == False:
             cv2.putText(frame, "Incorrect Back Posture", (
@@ -1553,6 +1564,9 @@ def baye_salute_modified(results, frame):
                 window_size[0]-800, window_size[1]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         if angle_between_wrist_elbow_shoulder_right_check == False:
             cv2.putText(frame, "Keep Left hand straight", (
+                window_size[0]-900, window_size[1]-100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+        if distance_nose_ear_left_check == False:
+            cv2.putText(frame, "Face head to the left", (
                 window_size[0]-900, window_size[1]-100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
 
         return False, frame
@@ -1576,6 +1590,7 @@ def daine_salute_modified(results, frame):
     ear_left = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_EAR]
     knee_left = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_KNEE]
     knee_right = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_KNEE]
+    nose = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.NOSE]
 
     if shoulder_right.visibility < 0.7 or elbow_right.visibility < 0.7 or wrist_right.visibility < 0.7 or \
             shoulder_left.visibility < 0.7 or elbow_left.visibility < 0.7 or wrist_left.visibility < 0.7 or \
@@ -1612,6 +1627,7 @@ def daine_salute_modified(results, frame):
                              int(knee_left.y * height))
     knee_right_coordinates = (
         int(knee_right.x * width), int(knee_right.y * height))
+    nose_coordinates = (int(nose.x * width), int(nose.y * height))
 
     # get the center of the body
     shoulder_center_coordinates = midpoint(
@@ -1644,6 +1660,9 @@ def daine_salute_modified(results, frame):
         wrist_left_coordinates, hip_left_coordinates)
     distance_between_rightwrist_righthip = get_distance(
         wrist_right_coordinates, hip_right_coordinates)
+    
+    distance_nose_ear_right = check_direction(
+        nose_coordinates, ear_right_coordinates)
 
     back_posture_check = back_posture > 160 and back_posture < 210
     body_posture_check = body_posture > 160 and body_posture < 200
@@ -2096,10 +2115,10 @@ def Khade_Khade_Peeche_Mud(results, frame, mud_array):
                     (window_size[0]-550, window_size[1]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
     return flag, frame, mud_array
 
-# ? Nihira add your code here
 
-# def Daine_salute(results, frame):
-# pass
-
-# def Baye_salute(results, frame):
-# pass
+#TODOs
+# Salute logic
+# use the distance substraction logic for front, daine and baye salute
+# front has one -ve one +ve
+# daine has two +ve
+# baye has two -ve
