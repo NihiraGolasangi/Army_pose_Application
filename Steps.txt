@@ -1,0 +1,7 @@
+1 - install requirements.txt
+2 - run the script
+3 - open UI
+Test for 3 positions:
+ - savdhan
+ - vishram
+ - front salute
