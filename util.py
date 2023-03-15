@@ -1269,7 +1269,7 @@ def front_salute(results, frame):
     # check if body is visible
     if shoulder_right.visibility < 0.7 or elbow_right.visibility < 0.7 or wrist_right.visibility < 0.7 or \
             shoulder_left.visibility < 0.7 or elbow_left.visibility < 0.7 or wrist_left.visibility < 0.7 or \
-            hip_right.visibility < 0.7 or hip_left.visibility < 0.7 or ankle_right.visibility > 0.3 or \
+            hip_right.visibility < 0.7 or hip_left.visibility < 0.7 or ankle_right.visibility < 0.7 or \
             ankle_left.visibility < 0.7 or ear_right.visibility < 0.7 or ear_left.visibility < 0.7 or \
             knee_left.visibility < 0.7 or knee_right.visibility < 0.7:
         cv2.putText(frame, "Full body should be visible", (int(
