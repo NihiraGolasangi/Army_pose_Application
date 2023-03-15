@@ -138,6 +138,7 @@ def gen_frames_pose(a=1):  # generate frame by frame from camera
                 elif choice == 5:
                     activity_check_flag, frame = util.front_salute(
                         results, frame)
+                
                 elif choice == 6:
                     if not chk:
                         activity_check_flag, frame, mud_array = util.Khade_Khade_Daine_Mud(

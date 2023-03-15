@@ -193,7 +193,7 @@ def vishram(results, frame):
             hip_right.visibility < 0.7 or hip_left.visibility < 0.7 or heel_left.visibility < 0.7 or \
             heel_right.visibility < 0.7 or ear_right.visibility < 0.7 or ear_left.visibility < 0.7 or \
             knee_left.visibility < 0.7 or knee_right.visibility < 0.7:
-        cv2.putText(frame, "Take a correct stance", (int(width/2),
+        cv2.putText(frame, "Entire body not visible", (int(width/2),
                     int(height/2)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
         return False, frame
 
@@ -307,7 +307,7 @@ def savdhan(results, frame):
             hip_right.visibility < 0.7 or hip_left.visibility < 0.7 or ankle_right.visibility < 0.7 or \
             ankle_left.visibility < 0.7 or ear_right.visibility < 0.7 or ear_left.visibility < 0.7 or \
             knee_left.visibility < 0.7 or knee_right.visibility < 0.7:
-        cv2.putText(frame, "Take a correct stance", (int(width/2),
+        cv2.putText(frame, "Entire body not visible", (int(width/2),
                     int(height/2)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
         return False, frame
 
@@ -388,12 +388,10 @@ def savdhan(results, frame):
     if back_posture_check and body_posture_check and distance_between_knees_check and \
         distance_between_ankles_check and distance_between_rightwrist_righthip_check and \
             distance_between_leftwrist_lefthip_check and angle_between_ankle_check:
-        print(f'angle between ankle: {angle_between_ankle}')
         cv2.putText(frame, "Correct Front Savdhan Position",
                     (window_size[0]-800, window_size[1]-100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
         return True, frame
     else:
-        print(f'angle between ankle: {angle_between_ankle}')
         cv2.putText(frame, "Incorrect Front Savdhan Position",
                     (window_size[0]-800, window_size[1]-350), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         if not back_posture_check:
@@ -1272,8 +1270,8 @@ def front_salute(results, frame):
     if shoulder_right.visibility < 0.7 or elbow_right.visibility < 0.7 or wrist_right.visibility < 0.7 or \
             shoulder_left.visibility < 0.7 or elbow_left.visibility < 0.7 or wrist_left.visibility < 0.7 or \
             hip_right.visibility < 0.7 or hip_left.visibility < 0.7 or ankle_right.visibility > 0.3 or \
-            ankle_left.visibility > 0.3 or ear_right.visibility < 0.7 or ear_left.visibility < 0.7 or \
-            knee_left.visibility > 0.3 or knee_right.visibility > 0.3:
+            ankle_left.visibility < 0.7 or ear_right.visibility < 0.7 or ear_left.visibility < 0.7 or \
+            knee_left.visibility < 0.7 or knee_right.visibility < 0.7:
         cv2.putText(frame, "Full body should be visible", (int(
             width/2), int(height/2)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
         return False, frame
@@ -1543,7 +1541,7 @@ def baye_salute_modified(results, frame):
 
     #? for Baye salute check for distance_nose_left
     #? for Daine salute check for distance_nose_right
-    print(f'distance_nose_ear_left: {distance_nose_ear_left}')
+    # print(f'distance_nose_ear_left: {distance_nose_ear_left}')
 
     if back_posture_check and body_posture_check and distance_between_knees_check and \
             distance_between_ankles_check and distance_between_rightwrist_righthip_check and \
