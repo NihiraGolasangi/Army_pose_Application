@@ -1274,7 +1274,7 @@ def front_salute(results, frame):
             hip_right.visibility < 0.7 or hip_left.visibility < 0.7 or ankle_right.visibility > 0.3 or \
             ankle_left.visibility > 0.3 or ear_right.visibility < 0.7 or ear_left.visibility < 0.7 or \
             knee_left.visibility > 0.3 or knee_right.visibility > 0.3:
-        cv2.putText(frame, "Take a correct stance\nOnly upper body should be visible", (int(
+        cv2.putText(frame, "Full body should be visible", (int(
             width/2), int(height/2)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
         return False, frame
 
@@ -1343,17 +1343,6 @@ def front_salute(results, frame):
     distance_nose_ear_left = check_direction(
         nose_coordinates, ear_left_coordinates)
 
-    # TODO: how to detect hands are rolled in a box or not
-    # CHANGE THESE VALUES to make them more accurate for detection
-
-    # adding the distance condition for salute
-
-    # get coordinates of the left eyebrow (left is right in video so calculate for left)
-
-    # right_eyebrow = results.face_landmarks.landmark[130] if results.face_landmarks else None
-    # right_hand_middle_finger_tip = results.right_hand_landmarks.landmark[12] if results.right_hand_landmarks else None
-    # right_hand_middle_finger_mid = results.right_hand_landmarks.landmark[11] if results.right_hand_landmarks else None
-
     left_eyebrow = results.face_landmarks.landmark[359] if results.face_landmarks else None
     left_hand_middle_finger_tip = results.left_hand_landmarks.landmark[
         12] if results.left_hand_landmarks else None
@@ -1361,12 +1350,6 @@ def front_salute(results, frame):
         11] if results.left_hand_landmarks else None
 
     print('_'*45)
-    # if right_eyebrow is None:
-    #     print(f'Right eyebrow is not visible - {right_eyebrow}')
-    # if right_hand_middle_finger_tip is None:
-    #     print(f'Right hand middle finger tip is not visible - {right_hand_middle_finger_tip}')
-    # if right_hand_middle_finger_mid is None:
-    #     print(f'Right hand middle finger mid is not visible - {right_hand_middle_finger_mid}')
     if left_eyebrow is None:
         print(f'Left eyebrow is not visible - {left_eyebrow}')
     if left_hand_middle_finger_tip is None:
@@ -1376,10 +1359,6 @@ def front_salute(results, frame):
         print(
             f'Left hand middle finger mid is not visible - {left_hand_middle_finger_mid}')
 
-    # right_eyebrow_coordinates = (int(right_eyebrow.x * width), int(right_eyebrow.y * height)) if right_eyebrow else None
-    # right_hand_middle_finger_tip_coordinates = (int(right_hand_middle_finger_tip.x * width), int(right_hand_middle_finger_tip.y * height)) if right_hand_middle_finger_tip else None
-    # right_hand_middle_finger_mid_coordinates = (int(right_hand_middle_finger_mid.x * width), int(right_hand_middle_finger_mid.y * height)) if right_hand_middle_finger_mid else None
-
     left_eyebrow_coordinates = (int(
         left_eyebrow.x * width), int(left_eyebrow.y * height)) if left_eyebrow else None
     left_hand_middle_finger_tip_coordinates = (int(left_hand_middle_finger_tip.x * width), int(
@@ -1387,9 +1366,6 @@ def front_salute(results, frame):
     left_hand_middle_finger_mid_coordinates = (int(left_hand_middle_finger_mid.x * width), int(
         left_hand_middle_finger_mid.y * height)) if left_hand_middle_finger_mid else None
 
-    # cv2.circle(frame, left_eyebrow_coordinates, 10, (0, 255, 0), -1)
-    # cv2.circle(frame, right_eyebrow_coordinates, 20, (0, 255, 0), 2)
-    # is_distance_between_right_tip_eyebrow_correct = get_distance(right_eyebrow_coordinates, right_hand_middle_finger_tip_coordinates) <= 1.75 * get_distance(right_hand_middle_finger_tip_coordinates, right_hand_middle_finger_mid_coordinates) if right_eyebrow and right_hand_middle_finger_tip and right_hand_middle_finger_mid else False
     is_distance_between_left_tip_eyebrow_correct = get_distance(left_eyebrow_coordinates, left_hand_middle_finger_tip_coordinates) <= 1.75 * get_distance(
         left_hand_middle_finger_tip_coordinates, left_hand_middle_finger_mid_coordinates) if left_eyebrow and left_hand_middle_finger_tip and left_hand_middle_finger_mid else False
 
