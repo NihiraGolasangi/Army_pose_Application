@@ -1808,3 +1808,13 @@ def Khade_Khade_Peeche_Mud(results, frame, mud_array):
         cv2.putText(frame, f'Khade Khade Peeche Mud complete',
                     (window_size[0]-550, window_size[1]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
     return flag, frame, mud_array
+
+
+def Daine_salute(results, frame):
+
+    nose = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.NOSE]
+    left_shoulder = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_SHOULDER]
+    right_shoulder = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_SHOULDER]
+
+    # ? nose -> left shoulder -> right shoulder
+    

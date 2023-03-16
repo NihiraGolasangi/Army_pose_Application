@@ -130,17 +130,15 @@ def gen_frames_pose(a=1):  # generate frame by frame from camera
                 elif choice == 2:
                     activity_check_flag, frame = util.vishram(results, frame)
                 elif choice == 3:
-                    activity_check_flag, frame = util.baye_salute(
+                    activity_check_flag, frame = util.baye_salute_modified(
                         results, frame)
                 elif choice == 4:
-                    activity_check_flag, frame = util.Daine_Salute(
+                    activity_check_flag, frame = util.daine_salute_modified(
                         results, frame)
-                # elif choice == 5:
-                #     activity_check_flag, frame = util.front_salute(
-                #         results, frame)
                 elif choice == 5:
-                    activity_check_flag, frame = util.front_salute_modified(
+                    activity_check_flag, frame = util.front_salute(
                         results, frame)
+                
                 elif choice == 6:
                     if not chk:
                         activity_check_flag, frame, mud_array = util.Khade_Khade_Daine_Mud(
