@@ -1,7 +1,7 @@
 import cv2
 import util
 
-path = '/Users/atharvaparikh/Desktop/atCode/Project/DIAT/End2End Implemenations/Army_pose_Application/Testing Videos/Salute_/video_20220719_095724.mp4'
+path = '/Users/atharvaparikh/Desktop/atCode/Project/DIAT/End2End Implemenations/Army_pose_Application/Testing Videos/Salute_/video_20220719_093025.mp4'
 
 def main(path):
     cap = cv2.VideoCapture(path)
