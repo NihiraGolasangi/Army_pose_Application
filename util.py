@@ -2,13 +2,20 @@
 import cv2
 import math
 import mediapipe as mp
+from pose_logger import logger
+import os
 
 # Build Keypoints using MP Holistic
 mp_holistic = mp.solutions.holistic      # Holistic model
 mp_drawing = mp.solutions.drawing_utils  # Drawing utilities
 
-window_size = (0, 0)
+if os.path.exists("ArmyPose.log"):
+    os.remove("ArmyPose.log")
+    #create a file
+    f = open("ArmyPose.log", "w")
+    f.close()
 
+window_size = (0, 0)
 
 def get_name_of_user():
     name = input("Enter your name: ")
@@ -166,7 +173,6 @@ def mediapipe_detection(image, model):
     return image, results
 
 # =============================================================== CHECK POSITIONS ===============================================================
-
 
 def vishram(results, frame):
 
@@ -391,31 +397,48 @@ def savdhan(results, frame):
             distance_between_leftwrist_lefthip_check and angle_between_ankle_check:
         cv2.putText(frame, "Correct Front Savdhan Position",
                     (window_size[0]-800, window_size[1]-100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+        logger.info("Correct Front Savdhan Position")
         return True, frame
     else:
         cv2.putText(frame, "Incorrect Front Savdhan Position",
                     (window_size[0]-800, window_size[1]-350), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+        logger.info("Incorrect Front Savdhan Position")
+
         if not back_posture_check:
             cv2.putText(frame, "Incorrect back posture", (
                 window_size[0]-600, window_size[1]-300), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+            logger.info("Incorrect back posture")
+            logger.info(f'back_posture: {back_posture}')
         if not body_posture_check:
             cv2.putText(frame, "Incorrect body posture", (
                 window_size[0]-600, window_size[1]-250), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+            logger.info("Incorrect body posture")
+            logger.info(f'body_posture: {body_posture}')
         if not distance_between_knees_check:
             cv2.putText(frame, "Put knees close together", (
                 window_size[0]-600, window_size[1]-200), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+            logger.info(f'Incorrect distance between knees')
+            logger.info(f'distance_between_knees: {distance_between_knees}')
         if not distance_between_ankles_check:
             cv2.putText(frame, "Put ankles close together", (
                 window_size[0]-600, window_size[1]-150), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+            logger.info(f'Incorrect distance between ankles')
+            logger.info(f'distance_between_ankles: {distance_between_ankles}')
         if not distance_between_rightwrist_righthip_check:
             cv2.putText(frame, "Put left wrist close to left hip", (
                 window_size[0]-600, window_size[1]-100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+            logger.info(f'Incorrect distance between rightwrist_righthip')
+            logger.info(f'distance_between_rightwrist_righthip: {distance_between_rightwrist_righthip}')
         if not distance_between_leftwrist_lefthip_check:
             cv2.putText(frame, "Put right wrist close to right hip", (
                 window_size[0]-600, window_size[1]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+            logger.info(f'Incorrect distance between leftwrist_lefthip')
+            logger.info(f'distance_between_leftwrist_lefthip: {distance_between_leftwrist_lefthip}')
         if not angle_between_ankle_check:
             cv2.putText(frame, "Incorrect angle between ankles", (
                 window_size[0]-600, window_size[1]-0), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+            logger.info(f'Incorrect angle between ankles')
+            logger.info(f'angle_between_ankle: {angle_between_ankle}')
         return False, frame
 
 
@@ -1507,14 +1530,14 @@ def baye_salute_modified(results, frame):
     distance_between_rightwrist_righthip = get_distance(
         wrist_right_coordinates, hip_right_coordinates)
 
-    # distance_nose_ear_left = check_direction(
-    #     nose_coordinates, ear_left_coordinates)
-    # print(distance_nose_ear_left)
+    distance_nose_ear_left = check_direction(
+        nose_coordinates, ear_left_coordinates)
+    print(distance_nose_ear_left)
 
     # written left but is actually right
     distance_nose_ear_right = check_direction(
         nose_coordinates, ear_right_coordinates)
-    # print(distance_nose_ear_left)
+    print(distance_nose_ear_right)
 
     back_posture_check = back_posture > 160 and back_posture < 210
     body_posture_check = body_posture > 160 and body_posture < 200
