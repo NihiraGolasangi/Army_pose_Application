@@ -408,37 +408,37 @@ def savdhan(results, frame):
             cv2.putText(frame, "Incorrect back posture", (
                 window_size[0]-600, window_size[1]-300), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
             logger.info("Incorrect back posture")
-            logger.info(f'back_posture: {back_posture}')
+            logger.info(f'back_posture: {back_posture}: (160, 210)')
         if not body_posture_check:
             cv2.putText(frame, "Incorrect body posture", (
                 window_size[0]-600, window_size[1]-250), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
             logger.info("Incorrect body posture")
-            logger.info(f'body_posture: {body_posture}')
+            logger.info(f'body_posture: {body_posture}: (160, 200)')
         if not distance_between_knees_check:
             cv2.putText(frame, "Put knees close together", (
                 window_size[0]-600, window_size[1]-200), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
             logger.info(f'Incorrect distance between knees')
-            logger.info(f'distance_between_knees: {distance_between_knees}')
+            logger.info(f'distance_between_knees: {distance_between_knees}: (35, 60)')
         if not distance_between_ankles_check:
             cv2.putText(frame, "Put ankles close together", (
                 window_size[0]-600, window_size[1]-150), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
             logger.info(f'Incorrect distance between ankles')
-            logger.info(f'distance_between_ankles: {distance_between_ankles}')
+            logger.info(f'distance_between_ankles: {distance_between_ankles}: (15, 45)')
         if not distance_between_rightwrist_righthip_check:
             cv2.putText(frame, "Put left wrist close to left hip", (
                 window_size[0]-600, window_size[1]-100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
             logger.info(f'Incorrect distance between rightwrist_righthip')
-            logger.info(f'distance_between_rightwrist_righthip: {distance_between_rightwrist_righthip}')
+            logger.info(f'distance_between_rightwrist_righthip: {distance_between_rightwrist_righthip}: (30, 60)')
         if not distance_between_leftwrist_lefthip_check:
             cv2.putText(frame, "Put right wrist close to right hip", (
                 window_size[0]-600, window_size[1]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
             logger.info(f'Incorrect distance between leftwrist_lefthip')
-            logger.info(f'distance_between_leftwrist_lefthip: {distance_between_leftwrist_lefthip}')
+            logger.info(f'distance_between_leftwrist_lefthip: {distance_between_leftwrist_lefthip}: (30, 60)')
         if not angle_between_ankle_check:
             cv2.putText(frame, "Incorrect angle between ankles", (
                 window_size[0]-600, window_size[1]-0), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
             logger.info(f'Incorrect angle between ankles')
-            logger.info(f'angle_between_ankle: {angle_between_ankle}')
+            logger.info(f'angle_between_ankle: {angle_between_ankle}: (80, 120)')
         return False, frame
 
 
