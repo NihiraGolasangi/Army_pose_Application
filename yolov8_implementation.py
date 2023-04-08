@@ -6,7 +6,7 @@ import numpy as np
 #Load the model
 model = YOLO('yolov8n.pt')
 
-path = '/Users/atharvaparikh/Desktop/atCode/Project/DIAT/End2End Implemenations/Army_pose_Application/Testing Videos/Salute_/video_20220719_095724.mp4'
+path = '/Users/atharvaparikh/Desktop/atCode/Project/DIAT/End2End Implemenations/Army_pose_Application/Testing Videos/Salute_/video_20220719_093025.mp4'
 
 def main(path):
     cap = cv2.VideoCapture(path)
@@ -56,24 +56,61 @@ def main(path):
             ymin = int(ymin)
             xmax = int(xmax)
             ymax = int(ymax)
-            subframe = frame[ymin:ymax, xmin:xmax]
-            #put this frame in a fixed size frame
-            #create a blank frame
-            resize_to = (250, 500)
-            subframe = cv2.resize(subframe, resize_to) #TODO: this frame size needs to be fixed and properly chosen
-            # blank_image = np.zeros(util.window_size, np.uint8)
-            #create a 3d blank image
-            x = 0
-            y = 0
-            width = subframe.shape[1]
-            height = subframe.shape[0]
-            # blank_image = np.zeros((util.window_size[0], util.window_size[1], 3), np.uint8)
+            # subframe = frame[ymin:ymax, xmin:xmax]
+
+            #================================================================================================ Increase the image size after cropping
+            height = frame.shape[0]
+            width = frame.shape[1]
+            adjuster = 35 #? change this value upon experimentation
             
-            blank_image = np.zeros((height + 200, width + 200, 3),np.uint8)
-            print(f'Blank Image Shape: {blank_image.shape}')
-            print(f'Subframe Shape: {subframe.shape}')
-            blank_image[100:height+100, 100:width+100] = subframe
-            cv2.imshow("Imposed person", blank_image)
+            #increase the size of the image
+            #increase the height
+            if ymin - adjuster < 0:
+                ymin = 0
+            else:
+                ymin = ymin - adjuster
+
+            if ymax + adjuster > height:
+                ymax = height
+            else:
+                ymax = ymax + adjuster
+
+            #increase the width
+            if xmin - adjuster < 0:
+                xmin = 0
+            else:
+                xmin = xmin - adjuster
+
+            if xmax + adjuster > width:
+                xmax = width
+            else:
+                xmax = xmax + adjuster
+
+            subframe = frame[ymin:ymax, xmin:xmax]
+            resize_to = (250, 500)
+            subframe = cv2.resize(subframe, resize_to)
+            results, frame = util.run_mediapipe_holistic(subframe)
+            #================================================================================================
+            
+            ##================================================================================================ Blank frame logic
+            # #put this frame in a fixed size frame
+            # #create a blank frame
+            # resize_to = (250, 500)
+            # subframe = cv2.resize(subframe, resize_to) #TODO: this frame size needs to be fixed and properly chosen
+            # # blank_image = np.zeros(util.window_size, np.uint8)
+            # #create a 3d blank image
+            # x = 0
+            # y = 0
+            # width = subframe.shape[1]
+            # height = subframe.shape[0]
+            # # blank_image = np.zeros((util.window_size[0], util.window_size[1], 3), np.uint8)
+            
+            # blank_image = np.zeros((height + 200, width + 200, 3),np.uint8)
+            # print(f'Blank Image Shape: {blank_image.shape}')
+            # print(f'Subframe Shape: {subframe.shape}')
+            # blank_image[100:height+100, 100:width+100] = subframe
+            # cv2.imshow("Imposed person", blank_image)
+            ##================================================================================================
             
             #TODO: we can put this cut frame inside another gray frame
             #resize the frame2 to a fixed size
@@ -81,7 +118,7 @@ def main(path):
             #TODO: take some additional area from the frame if possible
             #TODO: We need to   fix a size for the frame2 and resize the frame2 to that size
 
-            results, frame = util.run_mediapipe_holistic(frame)
+            # results, frame = util.run_mediapipe_holistic(frame)
             # results, frame = util.run_mediapipe_holistic(frame)
 
             #exception hending here
