@@ -11,9 +11,13 @@ ch.setLevel(logging.DEBUG)
 
 # create file handler
 log_file = 'app.log'
-if os.path.exists(log_file):
-    # if log file exists, delete it before recreating it
-    os.remove(log_file)
+# if os.path.exists(log_file):
+#     # if log file exists, delete it before recreating it
+#     print('\n\nDeleting log file: ', log_file)
+#     print('Creating new log file: ', log_file, '\n\n')
+#     os.remove(log_file)
+#     f = open(log_file, 'w')
+#     f.close()
 fh = logging.FileHandler(log_file)
 fh.setLevel(logging.INFO)
 

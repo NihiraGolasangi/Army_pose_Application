@@ -9,10 +9,10 @@ import os
 mp_holistic = mp.solutions.holistic      # Holistic model
 mp_drawing = mp.solutions.drawing_utils  # Drawing utilities
 
-if os.path.exists("ArmyPose.log"):
-    os.remove("ArmyPose.log")
+if os.path.exists("app.log"):
+    os.remove("app.log")
     #create a file
-    f = open("ArmyPose.log", "w")
+    f = open("app.log", "w")
     f.close()
 
 window_size = (0, 0)
