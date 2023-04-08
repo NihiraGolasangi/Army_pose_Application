@@ -6,7 +6,7 @@ import numpy as np
 #Load the model
 model = YOLO('yolov8n.pt')
 
-path = '/Users/atharvaparikh/Desktop/atCode/Project/DIAT/End2End Implemenations/Army_pose_Application/Testing Videos/Salute_/video_20220719_093025.mp4'
+path = '/Users/atharvaparikh/Desktop/atCode/Project/DIAT/End2End Implemenations/Army_pose_Application/Testing Videos/Salute_/video_20220719_091433.mp4'
 
 def main(path):
     cap = cv2.VideoCapture(path)
@@ -58,10 +58,11 @@ def main(path):
             ymax = int(ymax)
             # subframe = frame[ymin:ymax, xmin:xmax]
 
-            #================================================================================================ Increase the image size after cropping
+            # Increase the image size after cropping
+            #================================================================================================ 
             height = frame.shape[0]
             width = frame.shape[1]
-            adjuster = 35 #? change this value upon experimentation
+            adjuster = 100 #? change this value upon experimentation
             
             #increase the size of the image
             #increase the height
@@ -92,7 +93,8 @@ def main(path):
             results, frame = util.run_mediapipe_holistic(subframe)
             #================================================================================================
             
-            ##================================================================================================ Blank frame logic
+            #Blank frame logic
+            ##================================================================================================ 
             # #put this frame in a fixed size frame
             # #create a blank frame
             # resize_to = (250, 500)
