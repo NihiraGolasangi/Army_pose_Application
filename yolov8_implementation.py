@@ -6,7 +6,7 @@ import numpy as np
 #Load the model
 model = YOLO('yolov8n.pt')
 
-path = '/Users/atharvaparikh/Desktop/atCode/Project/DIAT/End2End Implemenations/Army_pose_Application/Testing Videos/Salute_/video_20220719_091433.mp4'
+path = '/Users/atharvaparikh/Desktop/atCode/Project/DIAT/End2End Implemenations/Army_pose_Application/Testing Videos/Salute_/video_20220719_091407.mp4'
 
 def main(path):
     cap = cv2.VideoCapture(path)
@@ -23,8 +23,12 @@ def main(path):
     # writer = cv2.VideoWriter(f'ProcessedVideo01.avi', cv2.VideoWriter_fourcc(
     #     *'MJPG'), 10, (frame_width, frame_height))
 
+    count = 0
     while (cap.isOpened()):
         ret, frame = cap.read()
+        count += 1
+        if count%10 != 0:
+            continue
         frame = cv2.flip(frame, 1)
         frame = cv2.blur(frame, (3, 3))
 
@@ -66,26 +70,18 @@ def main(path):
             
             #increase the size of the image
             #increase the height
-            if ymin - adjuster < 0:
-                ymin = 0
-            else:
-                ymin = ymin - adjuster
+            if ymin - adjuster < 0: ymin = 0 
+            else: ymin = ymin - adjuster
 
-            if ymax + adjuster > height:
-                ymax = height
-            else:
-                ymax = ymax + adjuster
+            if ymax + adjuster > height: ymax = height
+            else: ymax = ymax + adjuster
 
             #increase the width
-            if xmin - adjuster < 0:
-                xmin = 0
-            else:
-                xmin = xmin - adjuster
+            if xmin - adjuster < 0: xmin = 0
+            else: xmin = xmin - adjuster
 
-            if xmax + adjuster > width:
-                xmax = width
-            else:
-                xmax = xmax + adjuster
+            if xmax + adjuster > width: xmax = width
+            else: xmax = xmax + adjuster
 
             subframe = frame[ymin:ymax, xmin:xmax]
             resize_to = (250, 500)
@@ -112,18 +108,11 @@ def main(path):
             # print(f'Subframe Shape: {subframe.shape}')
             # blank_image[100:height+100, 100:width+100] = subframe
             # cv2.imshow("Imposed person", blank_image)
+
+            # results, frame = util.run_mediapipe_holistic(frame)
             ##================================================================================================
-            
-            #TODO: we can put this cut frame inside another gray frame
-            #resize the frame2 to a fixed size
-            
-            #TODO: take some additional area from the frame if possible
-            #TODO: We need to   fix a size for the frame2 and resize the frame2 to that size
 
-            # results, frame = util.run_mediapipe_holistic(frame)
-            # results, frame = util.run_mediapipe_holistic(frame)
-
-            #exception hending here
+            #! exception pending here
             if results.pose_landmarks:
                 if choice == 1:
                     activity_check_flag, frame = util.savdhan(results, frame)
@@ -147,3 +136,27 @@ def main(path):
     # writer.release()
 
 main(path)
+
+#TODOs
+# 1. The feedback has to be provided on the main frame while the check is being done on the subframe
+# 2. Mainframe video will be rendered 
+# 3. Use angle logic instead of distance based logic
+
+# A. Savdhan:
+#    - angle between both legs X degrees
+#    - angle of armpits 
+#    - body posture
+#    - back posture
+
+# B. Vishram
+#    - angle between both legs
+#    - wrist visibility should be less than 0.3
+#    - back posture
+#    - body posture
+
+# C. Front Salute
+#    - All savdhan checks
+#    - angle of the right hand elbow
+
+# 4. Show the feedback on the frontend
+# 5. 

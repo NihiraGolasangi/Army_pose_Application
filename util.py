@@ -2,18 +2,14 @@
 import cv2
 import math
 import mediapipe as mp
-from pose_logger import logger
+from applogger import SpawnLogger
 import os
+
+logger = SpawnLogger('Logs/video_20220719_091407').get_logger()
 
 # Build Keypoints using MP Holistic
 mp_holistic = mp.solutions.holistic      # Holistic model
 mp_drawing = mp.solutions.drawing_utils  # Drawing utilities
-
-if os.path.exists("app.log"):
-    os.remove("app.log")
-    #create a file
-    f = open("app.log", "w")
-    f.close()
 
 window_size = (0, 0)
 
@@ -137,18 +133,18 @@ def draw_styled_landmarks(image, results):
     # Draw pose connections
     mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_holistic.POSE_CONNECTIONS,
                               mp_drawing.DrawingSpec(
-                                  color=(80, 22, 10), thickness=2, circle_radius=4),
-                              mp_drawing.DrawingSpec(color=(80, 44, 121), thickness=2, circle_radius=2))
+                                  color=(80, 22, 10), thickness=2, circle_radius=2),
+                              mp_drawing.DrawingSpec(color=(80, 44, 121), thickness=2, circle_radius=1))
     # Draw left hand connections
     mp_drawing.draw_landmarks(image, results.left_hand_landmarks, mp_holistic.HAND_CONNECTIONS,
                               mp_drawing.DrawingSpec(
-                                  color=(121, 22, 76), thickness=2, circle_radius=4),
-                              mp_drawing.DrawingSpec(color=(121, 44, 250), thickness=2, circle_radius=2))
+                                  color=(121, 22, 76), thickness=2, circle_radius=2),
+                              mp_drawing.DrawingSpec(color=(121, 44, 250), thickness=2, circle_radius=1))
     # Draw right hand connections
     mp_drawing.draw_landmarks(image, results.right_hand_landmarks, mp_holistic.HAND_CONNECTIONS,
                               mp_drawing.DrawingSpec(
-                                  color=(245, 117, 66), thickness=2, circle_radius=4),
-                              mp_drawing.DrawingSpec(color=(245, 66, 230), thickness=2, circle_radius=2))
+                                  color=(245, 117, 66), thickness=2, circle_radius=2),
+                              mp_drawing.DrawingSpec(color=(245, 66, 230), thickness=2, circle_radius=1))
 
 
 def run_mediapipe_holistic(frame):
