@@ -6,7 +6,7 @@ import numpy as np
 #Load the model
 model = YOLO('yolov8n.pt')
 
-path = '/Users/atharvaparikh/Desktop/atCode/Project/DIAT/End2End Implemenations/Army_pose_Application/Testing Videos/Salute_/video_20220719_091407.mp4'
+path = '/Users/atharvaparikh/Desktop/atCode/Project/DIAT/End2End Implemenations/Army_pose_Application/raw videos/Atharva Savdhan near.mp4'
 
 def main(path):
     cap = cv2.VideoCapture(path)

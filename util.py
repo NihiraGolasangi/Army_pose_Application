@@ -5,7 +5,7 @@ import mediapipe as mp
 from applogger import SpawnLogger
 import os
 
-logger = SpawnLogger('Logs/video_20220719_091407').get_logger()
+logger = SpawnLogger('Logs/Atharva Savdhan near').get_logger()
 
 # Build Keypoints using MP Holistic
 mp_holistic = mp.solutions.holistic      # Holistic model
@@ -394,8 +394,8 @@ def savdhan(results, frame):
     body_posture_check = body_posture > 160 and body_posture < 200
     distance_between_knees_check = distance_between_knees > 35 and distance_between_knees < 60
     distance_between_ankles_check = distance_between_ankles > 15 and distance_between_ankles < 45
-    distance_between_rightwrist_righthip_check = distance_between_rightwrist_righthip > 30 and distance_between_rightwrist_righthip < 60
-    distance_between_leftwrist_lefthip_check = distance_between_leftwrist_lefthip > 30 and distance_between_leftwrist_lefthip < 60
+    distance_between_rightwrist_righthip_check = distance_between_rightwrist_righthip > 19 and distance_between_rightwrist_righthip < 40
+    distance_between_leftwrist_lefthip_check = distance_between_leftwrist_lefthip > 20 and distance_between_leftwrist_lefthip < 40
     angle_between_ankle_check = angle_between_ankle > 80 and angle_between_ankle < 120
     # TODO: wrist closure calculation
 

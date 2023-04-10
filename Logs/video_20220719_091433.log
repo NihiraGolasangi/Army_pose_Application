@@ -334,7 +334,7 @@
 2023-04-09 19:22:33,689 - Logs/video_20220719_091433 - INFO - Incorrect distance between rightwrist_righthip
 2023-04-09 19:22:33,689 - Logs/video_20220719_091433 - INFO - distance_between_rightwrist_righthip: 25.298221281347036: (30, 60)
 2023-04-09 19:22:33,689 - Logs/video_20220719_091433 - INFO - Incorrect distance between leftwrist_lefthip
-2023-04-09 19:22:33,689 - Logs/video_20220719_091433 - INFO - distance_between_leftwrist_lefthip: 175.17134468856486: (30, 60)
+2023-04-09 19:22:33,689 - Logs/video_20220719_091433 - INFO - distance_between_leftwrist_`lefthip: 175.17134468856486: (30, 60)
 2023-04-09 19:22:33,689 - Logs/video_20220719_091433 - INFO - Incorrect angle between ankles
 2023-04-09 19:22:33,689 - Logs/video_20220719_091433 - INFO - angle_between_ankle: 69.40055487309625: (80, 120)
 2023-04-09 19:22:34,072 - Logs/video_20220719_091433 - INFO - Incorrect Front Savdhan Position
