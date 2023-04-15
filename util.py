@@ -5,7 +5,7 @@ import mediapipe as mp
 from applogger import SpawnLogger
 import os
 
-logger = SpawnLogger('Logs/Atharva Savdhan near').get_logger()
+logger = SpawnLogger('Logs/Atharva Savdhan Far').get_logger()
 
 # Build Keypoints using MP Holistic
 mp_holistic = mp.solutions.holistic      # Holistic model

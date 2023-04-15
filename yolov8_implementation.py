@@ -6,7 +6,7 @@ import numpy as np
 #Load the model
 model = YOLO('yolov8n.pt')
 
-path = '/Users/atharvaparikh/Desktop/atCode/Project/DIAT/End2End Implemenations/Army_pose_Application/raw videos/Atharva Savdhan near.mp4'
+path = '/Users/atharvaparikh/Desktop/atCode/Project/DIAT/End2End Implemenations/Army_pose_Application/raw videos/Atharva Savdhan Far.mp4'
 
 def main(path):
     cap = cv2.VideoCapture(path)
@@ -52,7 +52,7 @@ def main(path):
             cv2.putText(frame, "One person at a time is allowed", (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
             continue
         else:
-            #proper one person
+            #proper one person case
             bbox = np.asarray(boxes[0].xyxy[0])
             xmin, ymin, xmax, ymax = bbox
             #convert all the values to int
