@@ -1,7 +1,9 @@
 
 # HUMAN POSE ESTIMATION - DESIGNED FOR ARMY DRILL EXERCISES
 
-https://github.com/NihiraGolasangi/Army_pose_Application/assets/74126218/89067f20-2d46-4068-af84-4969369c4bd5
+
+
+https://github.com/NihiraGolasangi/Army_pose_Application/assets/74126218/9422594f-82fd-49cd-b7e4-a596b0b93f93
 
 
 
