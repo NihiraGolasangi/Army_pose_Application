@@ -13,8 +13,8 @@ The traditional method of army training, which relies on a single coordinator to
 - OpenCV
 - YOLOV-8
 
-<img src="images/image1.png" width="300" height="200" position="centre">
-<img src="images/image2.png" width="500" height="200" position="centre">
+<img src="Reference for Keypoints/Hand Points.png" width="300" height="200" position="centre">
+<img src="Reference for Keypoints/Pose Points.png" width="500" height="200" position="centre">
 
 ##### SALUTE
 
