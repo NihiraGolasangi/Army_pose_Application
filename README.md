@@ -1,7 +1,8 @@
 
 # HUMAN POSE ESTIMATION - DESIGNED FOR ARMY DRILL EXERCISES
 
-https://github.com/NihiraGolasangi/Army_pose_Application/assets/74126218/22566a4b-d5b1-4d61-919c-6e2bba75f600
+https://github.com/NihiraGolasangi/Army_pose_Application/assets/74126218/89067f20-2d46-4068-af84-4969369c4bd5
+
 
 
 The traditional method of army training, which relies on a single coordinator to constantly supervise the training, presents several challenges. One such challenge is the requirement for constant supervision. To address these limitations, this paper proposes a new method that automates the inspection process during training of essential activities such as Salute, Vishram, and Savdhan.
