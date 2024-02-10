@@ -2,9 +2,7 @@
 # HUMAN POSE ESTIMATION - DESIGNED FOR ARMY DRILL EXERCISES
 
 
-
 https://github.com/NihiraGolasangi/Army_pose_Application/assets/74126218/9422594f-82fd-49cd-b7e4-a596b0b93f93
-
 
 
 The traditional method of army training, which relies on a single coordinator to constantly supervise the training, presents several challenges. One such challenge is the requirement for constant supervision. To address these limitations, this paper proposes a new method that automates the inspection process during training of essential activities such as Salute, Vishram, and Savdhan.
@@ -46,17 +44,22 @@ Through the utilization of pose estimation algorithms and techniques, the system
 - The system focuses on army drill exercises, adhering to strict predefined rules for body postures, hand and leg positions, etc.
 - The process involves extracting key points such as shoulders, elbows, wrists, ears, hips, ankles, knees, and nose using Mediapipe's models. - Visibility criteria were set to >0.7 to ensure all body parts are visible. Once visibility conditions are met, the model checks angles and distances between body parts against predefined military standards. Any deviations trigger an error display on the user screen.
 - For angle estimation between keypoints, a formula utilizing the math.atan2 function is used:
-
-    angle = math.degrees(math.atan2(y3 - y2, x3 - x2) - math.atan2(y1 - y2, x1 - x2)) 
-
-   Where, (x1, y1), (x2, y2), and (x3, y3) represent the coordinates of three key points in a 2D space. We utilize the math.atan2(y, x) function, which computes the angle (in radians) between the positive x-axis and the point (x, y).
+```math
+\text{{angle}} = \text{{degrees}}\left(\arctan\left(\frac{{y_3 - y_2}}{{x_3 - x_2}}\right) - \arctan\left(\frac{{y_1 - y_2}}{{x_1 - x_2}}\right)\right)
+```
+Where, (x1, y1), (x2, y2), and (x3, y3) represent the coordinates of three key points in a 2D space. 
+We utilize the math.atan2(y, x) function, which computes the angle (in radians) between the positive x-axis and the point (x, y).
 
 - To measure the distance between keypoints, another formula is used:
 
-    s_sq_difference += (p_i - q_i) ** 2
-   distance = s_sq_difference ** 0.5 
+```math
+\text{sum of squared difference} = \sum (p_i - q_i)^2
+```
+```math
+\text{distance} = \sqrt{\text{sum of squared difference}}
+```
 
-   Where, p and q, represent the coordinates of distinct body landmarks or joints in a 2D space. The term "s_sq_difference" accumulates the sum of squared differences for each coordinate, denoted as p_i and q_i for the i-th coordinate (x or y) of keypoints p and q, respectively.
+Where, p and q, represent the coordinates of distinct body landmarks or joints in a 2D space. The term "s_sq_difference" accumulates the sum of squared differences for each coordinate, denoted as p_i and q_i for the i-th coordinate (x or y) of keypoints p and q, respectively.
 
 ### YOLOV-8
 
